@@ -1,0 +1,62 @@
+// Application bootstrap: validates content, applies persisted accessibility
+// settings, registers routes, and starts the router. Content validation
+// errors surface as a readable error screen instead of a blank page.
+
+import { registerRoute, startRouter } from './ui/router.js';
+import { renderHome } from './ui/screens/homeScreen.js';
+import { renderPicker } from './ui/screens/pickerScreen.js';
+import { renderDialogue } from './ui/screens/dialogueScreen.js';
+import { renderProgress } from './ui/screens/progressScreen.js';
+import { renderReview } from './ui/screens/reviewScreen.js';
+import { renderSettings } from './ui/screens/settingsScreen.js';
+import { settings } from './progress/settingsStore.js';
+
+async function boot() {
+  const screen = document.getElementById('screen');
+
+  // Load + validate the dialogue library. createDialogue() throws on
+  // malformed content, so a bad content file fails loudly here with the
+  // offending dialogue id -- it can never half-render inside a lesson.
+  let dialogueCount;
+  try {
+    const mod = await import('./data/dialogues/index.js');
+    dialogueCount = mod.ALL_DIALOGUES.length;
+    if (!dialogueCount) throw new Error('No dialogues registered.');
+  } catch (e) {
+    screen.innerHTML = `
+      <div class="boot-error" role="alert">
+        <h2>Content failed to load</h2>
+        <p style="color:var(--text-dim);margin:0.6rem 0">${String(e.message || e)}</p>
+        <p style="color:var(--text-faint);font-size:0.85rem">Fix the dialogue file above and reload.</p>
+      </div>`;
+    console.error(e);
+    return;
+  }
+
+  // Apply persisted accessibility settings before first paint.
+  document.documentElement.dataset.textsize = settings.get('textSize');
+  document.documentElement.dataset.reducedMotion = String(settings.get('reducedMotion'));
+
+  // Bottom navigation.
+  document.getElementById('bottom-nav').innerHTML = `
+    <a href="#/" data-nav="home"><span class="nav-ico">🏠</span>Home</a>
+    <a href="#/practice" data-nav="practice"><span class="nav-ico">🎙️</span>Practice</a>
+    <a href="#/review" data-nav="review"><span class="nav-ico">🔁</span>Review</a>
+    <a href="#/progress" data-nav="progress"><span class="nav-ico">📈</span>Progress</a>
+    <a href="#/settings" data-nav="settings"><span class="nav-ico">⚙️</span>Settings</a>`;
+
+  registerRoute('', renderHome);
+  registerRoute('practice', renderPicker);
+  registerRoute('dialogue/:id', renderDialogue);
+  registerRoute('progress', renderProgress);
+  registerRoute('review', renderReview);
+  registerRoute('settings', renderSettings);
+
+  // Warm up the speech-synthesis voice list (Chrome loads it async).
+  if ('speechSynthesis' in window) window.speechSynthesis.getVoices();
+
+  console.info(`SpeakScenes ready — ${dialogueCount} dialogues loaded.`);
+  startRouter();
+}
+
+boot();
