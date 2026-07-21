@@ -9,6 +9,14 @@ import { renderDialogue } from './ui/screens/dialogueScreen.js';
 import { renderProgress } from './ui/screens/progressScreen.js';
 import { renderReview } from './ui/screens/reviewScreen.js';
 import { renderSettings } from './ui/screens/settingsScreen.js';
+import { renderWorld } from './ui/screens/worldScreen.js';
+import { renderEncounter } from './ui/screens/encounterScreen.js';
+import { renderMiniGame } from './ui/screens/miniGameRouter.js';
+import { renderCharacter } from './ui/screens/characterScreen.js';
+import { renderPlacementTest } from './ui/screens/placementTestScreen.js';
+import { renderWelcome } from './ui/screens/welcomeScreen.js';
+import { renderCharacterCreation } from './ui/screens/characterCreationScreen.js';
+import { renderLevelSelect } from './ui/screens/levelSelectScreen.js';
 import { settings } from './progress/settingsStore.js';
 
 async function boot() {
@@ -37,20 +45,31 @@ async function boot() {
   document.documentElement.dataset.textsize = settings.get('textSize');
   document.documentElement.dataset.reducedMotion = String(settings.get('reducedMotion'));
 
-  // Bottom navigation.
+  // Bottom navigation. '#/' is now the World screen (map + growing
+  // character) -- the game, not a dashboard -- per the product spec. The
+  // original dashboard moved to '#/home', unchanged, still reachable from
+  // World's "Dashboard" action card.
   document.getElementById('bottom-nav').innerHTML = `
-    <a href="#/" data-nav="home"><span class="nav-ico">🏠</span>Home</a>
+    <a href="#/" data-nav="home"><span class="nav-ico">🗺️</span>World</a>
     <a href="#/practice" data-nav="practice"><span class="nav-ico">🎙️</span>Practice</a>
     <a href="#/review" data-nav="review"><span class="nav-ico">🔁</span>Review</a>
     <a href="#/progress" data-nav="progress"><span class="nav-ico">📈</span>Progress</a>
     <a href="#/settings" data-nav="settings"><span class="nav-ico">⚙️</span>Settings</a>`;
 
-  registerRoute('', renderHome);
+  registerRoute('', renderWorld);
+  registerRoute('home', renderHome);
   registerRoute('practice', renderPicker);
   registerRoute('dialogue/:id', renderDialogue);
   registerRoute('progress', renderProgress);
   registerRoute('review', renderReview);
   registerRoute('settings', renderSettings);
+  registerRoute('encounter/:locationId', renderEncounter);
+  registerRoute('minigame/:type/:id', renderMiniGame);
+  registerRoute('character', renderCharacter);
+  registerRoute('placement-test', renderPlacementTest);
+  registerRoute('welcome', renderWelcome);
+  registerRoute('character-creation', renderCharacterCreation);
+  registerRoute('level-select', renderLevelSelect);
 
   // Warm up the speech-synthesis voice list (Chrome loads it async).
   if ('speechSynthesis' in window) window.speechSynthesis.getVoices();

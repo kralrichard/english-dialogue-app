@@ -44,7 +44,10 @@ const EMOTIONS = {
   surprised:  { browY: -4, browTilt: 0,   mouth: 'M 0 9 m -4 0 a 4 5 0 1 0 8 0 a 4 5 0 1 0 -8 0' }
 };
 
-function hairSVG(style, color) {
+// Exported (in addition to being used internally below) so avatarBuilder.js
+// can reuse the same hair-rendering technique for the player's own growing
+// avatar instead of forking it.
+export function hairSVG(style, color) {
   switch (style) {
     case 'bun': return `<circle cx="0" cy="-30" r="9" fill="${color}"/><path d="M -20 -8 A 20 22 0 0 1 20 -8 L 20 -2 Q 0 -14 -20 -2 Z" fill="${color}"/>`;
     case 'short': return `<path d="M -20 -6 A 20 21 0 0 1 20 -6 L 20 -4 Q 12 -16 0 -15 Q -12 -16 -20 -4 Z" fill="${color}"/>`;
@@ -119,7 +122,7 @@ export function renderAvatar(presetKey, o = {}) {
   </div>`;
 }
 
-function shade(hex) {
+export function shade(hex) {
   const n = parseInt(hex.slice(1), 16);
   const r = Math.max(0, (n >> 16) - 42), g = Math.max(0, ((n >> 8) & 255) - 42), b = Math.max(0, (n & 255) - 42);
   return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;

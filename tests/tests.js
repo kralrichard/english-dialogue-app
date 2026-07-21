@@ -8,6 +8,7 @@
 import { scoreAttempt } from '../js/speech/scorer.js';
 import { DialogueEngine } from '../js/engine/dialogueEngine.js';
 import { validateDialogue, tokenize } from '../js/data/dialogueSchema.js';
+import { TapEngine } from '../js/engine/tapEngine.js';
 
 const results = [];
 const pending = [];
@@ -304,6 +305,164 @@ test('review: queue, grade, schedule', async () => {
   } finally {
     if (backup === null) localStorage.removeItem(KEY);
     else localStorage.setItem(KEY, backup);
+  }
+});
+
+// ---------------- tapEngine (A0 tap interactions) ----------------
+
+test('tapEngine: guarded transitions through a full round', () => {
+  const items = [{ id: 'a' }, { id: 'b' }];
+  const e = new TapEngine(items);
+  assertEq(e.state, 'prompt-speaking');
+  assertEq(e.submitTap('a'), null, 'cannot tap before awaiting-tap');
+
+  assert(e.promptFinishedSpeaking());
+  assertEq(e.state, 'awaiting-tap');
+  const r1 = e.submitTap('wrong');
+  assert(!r1.correct, 'wrong tap recorded as incorrect');
+  assertEq(e.state, 'incorrect');
+
+  assert(e.retry());
+  assertEq(e.state, 'awaiting-tap');
+  const r2 = e.submitTap('a');
+  assert(r2.correct, 'correct tap on retry');
+  assertEq(e.state, 'correct');
+
+  assert(e.next());
+  assertEq(e.state, 'prompt-speaking');
+  assertEq(e.index, 1);
+  e.promptFinishedSpeaking();
+  e.submitTap('b');
+  assert(e.next());
+  assertEq(e.state, 'complete');
+
+  const sum = e.getSummary();
+  assertEq(sum.totalItems, 2);
+  assertEq(sum.correctCount, 2);
+  assertEq(sum.accuracy, 100);
+});
+
+// ---------------- world/character progression ----------------
+
+function freshWorldState() {
+  return {
+    onboarded: true, playerName: '', worldLevel: 'A0', coins: 0,
+    avatar: { skinTone: '#e0aa7e', hairStyle: 'short', hairColor: '#4a2f1d', outfitId: 'default', accessoryIds: [] },
+    unlockedLocationIds: ['home'],
+    skillScores: { A0: null, A1: null, A2: null, B1: null, B2: null, C1: null, C2: null },
+    completedMissionIds: [], placementTest: { taken: false, recommendedLevel: null, takenAt: null }, mapVisited: []
+  };
+}
+function freshProgressState() {
+  return { xp: 0, streak: { current: 0, longest: 0, lastActiveDate: null }, speakingTimeLog: {}, completedDialogues: [], wordStats: {}, favorites: [], achievements: [], hadPerfectTurn: false, cefrLevel: 'A1' };
+}
+
+test('world: isLocationUnlocked honors manual unlock and level threshold', async () => {
+  const WKEY = 'edapp:world:v1', PKEY = 'edapp:progress:v1';
+  const wBackup = localStorage.getItem(WKEY);
+  const pBackup = localStorage.getItem(PKEY);
+  try {
+    localStorage.removeItem(WKEY);
+    localStorage.removeItem(PKEY);
+    const { worldStore, isLocationUnlocked } = await import('../js/progress/worldStore.js');
+    const { progressStore } = await import('../js/progress/progressStore.js');
+    worldStore.state = freshWorldState();
+    progressStore.state = freshProgressState();
+
+    assert(isLocationUnlocked('home'), 'home is explicitly unlocked from the default state');
+    assert(!isLocationUnlocked('hotel'), 'hotel needs A1, not reachable at A0');
+    worldStore.setWorldLevel('A1');
+    assert(isLocationUnlocked('hotel'), 'raising world level unlocks hotel (minWorldLevel A1)');
+    worldStore.setWorldLevel('A0');
+    assert(!isLocationUnlocked('hotel'), 'lowering level re-locks a level-only (non-sticky) location');
+    worldStore.unlockLocation('hotel');
+    assert(isLocationUnlocked('hotel'), 'explicit unlock is sticky even below the required level');
+  } finally {
+    if (wBackup === null) localStorage.removeItem(WKEY); else localStorage.setItem(WKEY, wBackup);
+    if (pBackup === null) localStorage.removeItem(PKEY); else localStorage.setItem(PKEY, pBackup);
+  }
+});
+
+test('missionEngine: completing a dialogue awards its mission exactly once', async () => {
+  const WKEY = 'edapp:world:v1', PKEY = 'edapp:progress:v1';
+  const wBackup = localStorage.getItem(WKEY);
+  const pBackup = localStorage.getItem(PKEY);
+  try {
+    localStorage.removeItem(WKEY);
+    localStorage.removeItem(PKEY);
+    const { worldStore } = await import('../js/progress/worldStore.js');
+    const { progressStore } = await import('../js/progress/progressStore.js');
+    const { checkMissionsForDialogue } = await import('../js/progress/missionEngine.js');
+    worldStore.state = freshWorldState();
+    progressStore.state = freshProgressState();
+
+    const dlg = { id: 'hotel-check-in-a1-01', locationId: 'hotel' };
+    const coinsBefore = worldStore.getState().coins;
+    const newly = checkMissionsForDialogue(dlg, { accuracy: 90 });
+    assert(newly.some(m => m.id === 'main-hotel'), 'main-hotel mission triggers on its dialogue id');
+    assert(worldStore.getState().coins > coinsBefore, 'coins awarded');
+    assert(worldStore.getState().unlockedLocationIds.includes('airport'), 'mission reward unlocks airport early');
+    assert(progressStore.state.xp > 0, 'mission XP is added to the same progressStore XP/level used elsewhere');
+
+    const again = checkMissionsForDialogue(dlg, { accuracy: 90 });
+    assertEq(again.length, 0, 'mission does not re-trigger once completed');
+  } finally {
+    if (wBackup === null) localStorage.removeItem(WKEY); else localStorage.setItem(WKEY, wBackup);
+    if (pBackup === null) localStorage.removeItem(PKEY); else localStorage.setItem(PKEY, pBackup);
+  }
+});
+
+test('review: vocab items queue and grade alongside dialogue-turn items', async () => {
+  const KEY = 'edapp:review:v1';
+  const backup = localStorage.getItem(KEY);
+  try {
+    localStorage.removeItem(KEY);
+    const { reviewSystem } = await import('../js/progress/reviewSystem.js');
+    reviewSystem.state = { items: [] };
+    reviewSystem.queueVocabItem({ id: 'cat', word: 'cat', translation_tr: 'kedi' });
+    reviewSystem.queueVocabItem({ id: 'cat', word: 'cat', translation_tr: 'kedi' }); // idempotent
+    assertEq(reviewSystem.getAllItems().length, 1, 'no duplicate vocab entries');
+
+    const item = reviewSystem.getAllItems()[0];
+    assertEq(reviewSystem.getKind(item), 'vocab');
+    assertEq(item.expected, 'cat');
+    reviewSystem.grade(item.id, 5);
+    assertEq(reviewSystem.getDueItems().length, 0, 'graded vocab item is scheduled forward like a turn item');
+
+    reviewSystem.state.items.push({ id: 'legacy::0', dialogueId: 'x', dueDate: new Date().toISOString(), expected: 'Hi.' });
+    assertEq(reviewSystem.getKind(reviewSystem.state.items[1]), 'turn', 'items with no kind field default to turn');
+  } finally {
+    if (backup === null) localStorage.removeItem(KEY);
+    else localStorage.setItem(KEY, backup);
+  }
+});
+
+test('npcs: getNpcForDialogue resolves every shipped dialogue', async () => {
+  const { ALL_DIALOGUES } = await import('../js/data/dialogues/index.js');
+  const { getNpcForDialogue } = await import('../js/data/npcs.js');
+  for (const d of ALL_DIALOGUES) {
+    const npc = getNpcForDialogue(d);
+    assert(npc && npc.name === d.characters.A.name, `${d.id}: NPC name should match characters.A.name`);
+    assert(npc.avatarPreset, `${d.id}: NPC missing avatarPreset`);
+  }
+});
+
+test('locations: featured locations have a valid minWorldLevel', async () => {
+  const { LOCATIONS } = await import('../js/data/locations.js');
+  const { WORLD_LEVEL_CODES } = await import('../js/data/worldLevels.js');
+  for (const loc of LOCATIONS.filter(l => l.featured)) {
+    assert(WORLD_LEVEL_CODES.includes(loc.minWorldLevel), `${loc.id}: invalid minWorldLevel "${loc.minWorldLevel}"`);
+  }
+});
+
+test('missions: every completeDialogue requirement references a real dialogue id', async () => {
+  const { ALL_DIALOGUES } = await import('../js/data/dialogues/index.js');
+  const { MISSIONS } = await import('../js/data/missions.js');
+  const ids = new Set(ALL_DIALOGUES.map(d => d.id));
+  for (const m of MISSIONS) {
+    for (const req of m.requirements) {
+      if (req.type === 'completeDialogue') assert(ids.has(req.dialogueId), `${m.id}: references missing dialogue id "${req.dialogueId}"`);
+    }
   }
 });
 

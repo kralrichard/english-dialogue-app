@@ -27,6 +27,7 @@ class ReviewSystem {
     if (this.state.items.some(it => it.id === id)) return;
     this.state.items.push({
       id,
+      kind: 'turn',
       dialogueId: dialogue.id,
       dialogueTitle: dialogue.title,
       locationId: dialogue.locationId,
@@ -40,6 +41,32 @@ class ReviewSystem {
       addedAt: new Date().toISOString()
     });
     save(this.state);
+  }
+
+  /** Queues a vocabulary word (from the tap-to-inspect popup or a mini-game
+   *  miss) into the same SM-2 queue as failed dialogue turns. `kind` lets
+   *  reviewScreen.js render/grade each item type appropriately; existing
+   *  items with no `kind` field default to 'turn' via getKind() below. */
+  queueVocabItem(vocabWord) {
+    const id = `vocab::${vocabWord.id}`;
+    if (this.state.items.some(it => it.id === id)) return;
+    this.state.items.push({
+      id,
+      kind: 'vocab',
+      wordId: vocabWord.id,
+      expected: vocabWord.word,
+      translation_tr: vocabWord.translation_tr,
+      easeFactor: 2.5,
+      interval: 0,
+      repetitions: 0,
+      dueDate: new Date().toISOString(),
+      addedAt: new Date().toISOString()
+    });
+    save(this.state);
+  }
+
+  getKind(item) {
+    return item.kind || 'turn';
   }
 
   getDueItems(limit = 20) {

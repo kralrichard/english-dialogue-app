@@ -16,6 +16,14 @@ import { navigate } from '../router.js';
 
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
+// Review items come in two kinds: 'turn' (a failed dialogue sentence, has a
+// dialogueTitle) and 'vocab' (a tapped/missed word, has no dialogue). Both
+// are scored identically via scoreAttempt() against item.expected -- this
+// label is the only place the two need different display text.
+function sourceLabel(item) {
+  return item.kind === 'vocab' ? 'Vocabulary' : (item.dialogueTitle || 'Dialogue');
+}
+
 export function renderReview(container) {
   // Priority = overdue first (oldest due date), then newest failures.
   const due = [...reviewSystem.getDueItems(50)].sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
@@ -44,7 +52,7 @@ export function renderReview(container) {
             <div class="row">
               <span class="grow">
                 <b>“${esc(it.expected)}”</b><br>
-                <small style="color:var(--text-faint)">${esc(it.dialogueTitle)} · due ${new Date(it.dueDate).toLocaleDateString()} · streak ${it.repetitions}</small>
+                <small style="color:var(--text-faint)">${esc(sourceLabel(it))} · due ${new Date(it.dueDate).toLocaleDateString()} · streak ${it.repetitions}</small>
               </span>
               <button class="mini-btn" data-remove="${esc(it.id)}">Remove</button>
             </div>
@@ -177,7 +185,7 @@ export function renderReview(container) {
           <button class="mini-btn" id="btn-hear">▶ Hear it</button>
           <button class="mini-btn" id="btn-hear-slow">🐢 Slow</button>
         </div>
-        <div style="color:var(--text-faint);font-size:0.78rem;margin-top:0.6rem">From: ${esc(item.dialogueTitle)} · attempt ${s.attempts + (done ? 0 : 1)} of 3</div>
+        <div style="color:var(--text-faint);font-size:0.78rem;margin-top:0.6rem">From: ${esc(sourceLabel(item))} · attempt ${s.attempts + (done ? 0 : 1)} of 3</div>
       </div>
       ${s.lastScore ? renderFeedback(s.lastScore, { level, transcript: s.lastTranscript }) : ''}
       ${done ? `

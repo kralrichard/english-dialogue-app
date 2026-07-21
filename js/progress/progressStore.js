@@ -53,6 +53,14 @@ class ProgressStore {
     this._save();
   }
 
+  /** Adds XP outside of a full dialogue-completion event (e.g. mission and
+   *  mini-game rewards) so every reward in the app counts toward the same
+   *  XP/level number shown on the home/progress screens. */
+  addXp(amount) {
+    this.state.xp += Math.max(0, amount);
+    this._save();
+  }
+
   toggleFavorite(dialogueId) {
     const i = this.state.favorites.indexOf(dialogueId);
     if (i === -1) this.state.favorites.push(dialogueId);

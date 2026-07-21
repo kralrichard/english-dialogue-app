@@ -2,6 +2,7 @@ import { settings } from '../../progress/settingsStore.js';
 import { STRICTNESS_LEVELS } from '../../data/levels.js';
 import { tts, isTTSSupported } from '../../speech/tts.js';
 import { isNativeSpeechSupported } from '../../speech/speechRecognizer.js';
+import { downloadExport, parseImportText, applyImport } from '../../progress/exportImport.js';
 
 const ACCENTS = [
   [null, 'Match each dialogue (default)'], ['american', 'American'], ['british', 'British'],
@@ -94,7 +95,17 @@ export function renderSettings(container) {
     <div class="section-label">Data</div>
     <div class="card">
       <div class="setting-row">
-        <div class="grow"><div class="sr-label">Reset all data</div><div class="sr-desc">Deletes progress, review queue, favorites and settings on this device.</div></div>
+        <div class="grow"><div class="sr-label">Export progress</div><div class="sr-desc">Download everything (dialogues, review queue, world/character, settings) as one JSON file.</div></div>
+        <button class="btn small secondary" id="btn-export">Export</button>
+      </div>
+      <div class="setting-row">
+        <div class="grow"><div class="sr-label">Import progress</div><div class="sr-desc">Restore from a previously exported file. Replaces current data on this device.</div></div>
+        <button class="btn small secondary" id="btn-import">Import</button>
+      </div>
+      <input type="file" id="import-file" accept="application/json" style="display:none">
+      <div id="import-msg" style="font-size:0.8rem;margin-top:0.4rem"></div>
+      <div class="setting-row">
+        <div class="grow"><div class="sr-label">Reset all data</div><div class="sr-desc">Deletes progress, review queue, world/character and settings on this device.</div></div>
         <button class="btn small danger" id="btn-reset">Reset</button>
       </div>
     </div>
@@ -134,9 +145,25 @@ export function renderSettings(container) {
       volume: settings.get('volume')
     });
   });
+  container.querySelector('#btn-export').addEventListener('click', () => downloadExport());
+  container.querySelector('#btn-import').addEventListener('click', () => container.querySelector('#import-file').click());
+  container.querySelector('#import-file').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const msg = container.querySelector('#import-msg');
+    file.text().then(text => {
+      const parsed = parseImportText(text);
+      if (!confirm('Import this file? It will replace your current progress on this device.')) return;
+      applyImport(parsed);
+      location.reload();
+    }).catch(err => {
+      msg.style.color = 'var(--red)';
+      msg.textContent = err.message || 'Import failed.';
+    });
+  });
   container.querySelector('#btn-reset').addEventListener('click', () => {
-    if (confirm('Delete ALL progress, review items and settings on this device? This cannot be undone.')) {
-      ['edapp:progress:v1', 'edapp:review:v1', 'edapp:settings:v1', 'edapp:session:v1'].forEach(k => {
+    if (confirm('Delete ALL progress, review items, world/character and settings on this device? This cannot be undone.')) {
+      ['edapp:progress:v1', 'edapp:review:v1', 'edapp:settings:v1', 'edapp:session:v1', 'edapp:world:v1'].forEach(k => {
         try { localStorage.removeItem(k); } catch {}
       });
       location.reload();

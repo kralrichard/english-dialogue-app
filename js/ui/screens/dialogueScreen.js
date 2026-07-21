@@ -21,6 +21,8 @@ import { tts, isTTSSupported } from '../../speech/tts.js';
 import { progressStore } from '../../progress/progressStore.js';
 import { reviewSystem } from '../../progress/reviewSystem.js';
 import { sessionStore } from '../../progress/sessionStore.js';
+import { worldStore } from '../../progress/worldStore.js';
+import { checkMissionsForDialogue } from '../../progress/missionEngine.js';
 import { settings } from '../../progress/settingsStore.js';
 import { renderScene } from '../components/sceneBackground.js';
 import { renderAvatar } from '../components/characterAvatar.js';
@@ -438,9 +440,12 @@ export function renderDialogue(container, params) {
     const summary = engine.getSummary();
 
     let xpInfo = null;
+    let newMissions = [];
     if (!ui.completionRecorded) {
       ui.completionRecorded = true;
       xpInfo = progressStore.recordDialogueCompletion(dialogue, summary);
+      newMissions = checkMissionsForDialogue(dialogue, summary);
+      worldStore.recordSkillSample(dialogue.level, summary.accuracy);
       sessionStore.clear();
     }
 
@@ -455,6 +460,7 @@ export function renderDialogue(container, params) {
         <p>${esc(dialogue.title)} — ${esc(dialogue.goal)}</p>
       </div>
       ${xpInfo ? `<div class="xp-toast">+${xpInfo.xpGain} XP${xpInfo.newAchievements.length ? ` · 🏅 ${xpInfo.newAchievements.map(a => esc(a.name)).join(', ')}` : ''}</div>` : ''}
+      ${newMissions.length ? `<div class="xp-toast">🎯 Mission complete: ${newMissions.map(m => esc(m.title)).join(', ')}</div>` : ''}
       <div class="report-grid">
         <div class="report-stat"><div class="v">${summary.accuracy}%</div><div class="k">Word accuracy</div></div>
         <div class="report-stat"><div class="v">${summary.totalAttempts}</div><div class="k">Attempts</div></div>

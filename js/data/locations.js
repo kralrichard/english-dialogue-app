@@ -12,6 +12,12 @@
 // template family -- e.g. every shop uses 'retail' with a different accent
 // color -- so the visual system stays maintainable at catalog scale).
 
+// minWorldLevel/featured are additive fields used only by the world map
+// (js/ui/screens/worldScreen.js) and its unlock logic
+// (js/progress/worldStore.js) -- every other consumer of this file
+// (pickerScreen.js, dialogueScreen.js) ignores unknown keys, so adding them
+// here cannot break existing screens. Only locations with real authored
+// dialogue content today are marked featured: true for the world map's v1.
 export const LOCATIONS = [
   { id: 'seaside', name: 'At the Seaside', icon: '🏖️', sceneType: 'seaside', scenarios: [
     { id: 'beach-walk', name: 'Walking on the Beach' },
@@ -19,7 +25,7 @@ export const LOCATIONS = [
     { id: 'lifeguard-safety', name: 'Talking to a Lifeguard' },
     { id: 'ice-cream-stand', name: 'At the Ice Cream Stand' }
   ]},
-  { id: 'hotel', name: 'At a Hotel', icon: '🏨', sceneType: 'hotel-lobby', scenarios: [
+  { id: 'hotel', name: 'At a Hotel', icon: '🏨', sceneType: 'hotel-lobby', featured: true, minWorldLevel: 'A1', scenarios: [
     { id: 'booking-room', name: 'Booking a Room' },
     { id: 'check-in', name: 'Checking In' },
     { id: 'breakfast-info', name: 'Asking About Breakfast' },
@@ -32,7 +38,7 @@ export const LOCATIONS = [
     { id: 'housekeeping', name: 'Talking to Housekeeping' },
     { id: 'check-out', name: 'Checking Out' }
   ]},
-  { id: 'airport', name: 'At an Airport', icon: '✈️', sceneType: 'airport', scenarios: [
+  { id: 'airport', name: 'At an Airport', icon: '✈️', sceneType: 'airport', featured: true, minWorldLevel: 'A2', scenarios: [
     { id: 'check-in-desk', name: 'Airline Check-in Desk' },
     { id: 'security', name: 'Going Through Security' },
     { id: 'lost-luggage', name: 'Reporting Lost Luggage' },
@@ -45,25 +51,25 @@ export const LOCATIONS = [
     { id: 'seatmate-chat', name: 'Talking to a Seatmate' },
     { id: 'turbulence', name: 'During Turbulence' }
   ]},
-  { id: 'restaurant', name: 'At a Restaurant', icon: '🍽️', sceneType: 'restaurant', scenarios: [
+  { id: 'restaurant', name: 'At a Restaurant', icon: '🍽️', sceneType: 'restaurant', featured: true, minWorldLevel: 'A2', scenarios: [
     { id: 'ordering-food', name: 'Ordering Food' },
     { id: 'menu-questions', name: 'Asking About the Menu' },
     { id: 'order-complaint', name: 'Complaining About an Order' },
     { id: 'splitting-bill', name: 'Splitting the Bill' },
     { id: 'booking-table', name: 'Booking a Table' }
   ]},
-  { id: 'cafe', name: 'At a Café', icon: '☕', sceneType: 'cafe', scenarios: [
+  { id: 'cafe', name: 'At a Café', icon: '☕', sceneType: 'cafe', featured: true, minWorldLevel: 'A1', scenarios: [
     { id: 'ordering-coffee', name: 'Ordering Coffee' },
     { id: 'barista-smalltalk', name: 'Small Talk with the Barista' },
     { id: 'studying-chat', name: 'Working/Studying at a Café' },
     { id: 'meeting-friend', name: 'Meeting a Friend' }
   ]},
-  { id: 'hospital', name: 'At a Hospital', icon: '🏥', sceneType: 'hospital', scenarios: [
+  { id: 'hospital', name: 'At a Hospital', icon: '🏥', sceneType: 'hospital', featured: true, minWorldLevel: 'A2', scenarios: [
     { id: 'describing-symptoms', name: 'Describing Symptoms' },
     { id: 'doctor-consult', name: 'Talking to a Doctor' },
     { id: 'emergency-room', name: 'At the Emergency Room' }
   ]},
-  { id: 'pharmacy', name: 'At a Pharmacy', icon: '💊', sceneType: 'retail', scenarios: [
+  { id: 'pharmacy', name: 'At a Pharmacy', icon: '💊', sceneType: 'retail', featured: true, minWorldLevel: 'A1', scenarios: [
     { id: 'asking-medicine', name: 'Asking for Medicine' },
     { id: 'side-effects', name: 'Asking About Side Effects' },
     { id: 'refill-prescription', name: 'Refilling a Prescription' }
@@ -78,7 +84,7 @@ export const LOCATIONS = [
     { id: 'platform-delay', name: 'Asking About a Delay' },
     { id: 'lost-item', name: 'Reporting a Lost Item' }
   ]},
-  { id: 'taxi', name: 'In a Taxi', icon: '🚕', sceneType: 'taxi', scenarios: [
+  { id: 'taxi', name: 'In a Taxi', icon: '🚕', sceneType: 'taxi', featured: true, minWorldLevel: 'A1', scenarios: [
     { id: 'giving-directions', name: 'Giving Directions' },
     { id: 'discussing-fare', name: 'Discussing the Fare' },
     { id: 'driver-smalltalk', name: 'Small Talk with the Driver' }
@@ -87,7 +93,7 @@ export const LOCATIONS = [
     { id: 'asking-route', name: 'Asking About the Route' },
     { id: 'waiting-chat', name: 'Waiting and Chatting' }
   ]},
-  { id: 'bank', name: 'At a Bank', icon: '🏦', sceneType: 'bank-office', scenarios: [
+  { id: 'bank', name: 'At a Bank', icon: '🏦', sceneType: 'bank-office', featured: true, minWorldLevel: 'B2', scenarios: [
     { id: 'opening-account', name: 'Opening an Account' },
     { id: 'lost-card', name: 'Reporting a Lost Card' },
     { id: 'charge-complaint', name: 'Complaint About a Charge' }
@@ -96,7 +102,7 @@ export const LOCATIONS = [
     { id: 'reporting-theft', name: 'Reporting a Theft' },
     { id: 'witness-statement', name: 'Giving a Witness Statement' }
   ]},
-  { id: 'job-interview', name: 'At a Job Interview', icon: '💼', sceneType: 'formal-office', scenarios: [
+  { id: 'job-interview', name: 'At a Job Interview', icon: '💼', sceneType: 'formal-office', featured: true, minWorldLevel: 'B2', scenarios: [
     { id: 'general-interview', name: 'General Interview' },
     { id: 'behavioral-questions', name: 'Behavioral Questions' },
     { id: 'salary-negotiation', name: 'Salary Negotiation' }
@@ -110,7 +116,7 @@ export const LOCATIONS = [
     { id: 'professor-chat', name: 'Talking to a Professor' },
     { id: 'campus-life', name: 'Campus Life' }
   ]},
-  { id: 'home', name: 'At Home', icon: '🏠', sceneType: 'home', scenarios: [
+  { id: 'home', name: 'At Home', icon: '🏠', sceneType: 'home', featured: true, minWorldLevel: 'A0', scenarios: [
     { id: 'about-your-day', name: 'Talking About Your Day' },
     { id: 'household-chores', name: 'Household Chores' },
     { id: 'hosting-guest', name: 'Hosting a Guest' }
