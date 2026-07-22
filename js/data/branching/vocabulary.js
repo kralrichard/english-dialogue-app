@@ -65,7 +65,31 @@ const WORDS = [
     example: 'Could you give me directions to the station?', exampleTr: 'Bana istasyona yol tarifi verir misiniz?' },
   { word: 'nearest', tr: 'en yakın', type: 'adjective', ipa: '/ˈnɪə.rɪst/',
     definition: 'Closest.',
-    example: 'Where is the nearest pharmacy?', exampleTr: 'En yakın eczane nerede?' }
+    example: 'Where is the nearest pharmacy?', exampleTr: 'En yakın eczane nerede?' },
+  { word: 'refund', tr: 'para iadesi', type: 'noun', ipa: '/ˈriː.fʌnd/',
+    definition: 'Money given back for a returned item.',
+    example: 'I’d like a refund, please.', exampleTr: 'Para iadesi istiyorum, lütfen.', related: ['return', 'exchange'] },
+  { word: 'exchange', tr: 'değişim / değiştirmek', type: 'verb', ipa: '/ɪksˈtʃeɪndʒ/',
+    definition: 'To swap one thing for another.',
+    example: 'Can I exchange it for a larger size?', exampleTr: 'Daha büyük bedenle değiştirebilir miyim?' },
+  { word: 'receipt', tr: 'fiş / makbuz', type: 'noun', ipa: '/rɪˈsiːt/',
+    definition: 'A paper showing what you paid.',
+    example: 'Do you have the receipt?', exampleTr: 'Fişiniz var mı?' },
+  { word: 'aisle', tr: 'reyon / koridor', type: 'noun', ipa: '/aɪl/',
+    definition: 'A passage between shelves in a shop.',
+    example: 'The milk is in aisle four.', exampleTr: 'Süt dördüncü koridorda.' },
+  { word: 'single', tr: 'tek yön (bilet)', type: 'noun', ipa: '/ˈsɪŋ.ɡəl/',
+    definition: 'A one-way ticket.',
+    example: 'A single to London, please.', exampleTr: 'Londra’ya tek yön, lütfen.', related: ['return'] },
+  { word: 'return', tr: 'gidiş-dönüş / iade', type: 'noun', ipa: '/rɪˈtɜːn/',
+    definition: 'A round-trip ticket; or to take an item back.',
+    example: 'A return ticket, please.', exampleTr: 'Gidiş-dönüş bilet, lütfen.' },
+  { word: 'liable', tr: 'sorumlu', type: 'adjective', ipa: '/ˈlaɪ.ə.bəl/',
+    definition: 'Legally responsible for something.',
+    example: 'You won’t be liable for that payment.', exampleTr: 'O ödemeden sorumlu olmayacaksınız.' },
+  { word: 'entitled', tr: 'hak sahibi', type: 'adjective', ipa: '/ɪnˈtaɪ.təld/',
+    definition: 'Having the right to something.',
+    example: 'You’re entitled to a full refund.', exampleTr: 'Tam para iadesine hakkınız var.' }
 ];
 
 export const STORY_VOCAB = Object.fromEntries(WORDS.map(w => [w.word.toLowerCase(), w]));

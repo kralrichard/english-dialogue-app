@@ -562,18 +562,29 @@ test('branchEngine: commitChoice throws when not at a decision point (guard)', a
 test('storyStore: XP is full first time then reduced practice XP (anti-farm)', async () => {
   const { storyStore } = await import('../js/progress/storyStore.js');
   const { getScenario } = await import('../js/data/branching/scenarios/index.js');
+  const STORY_KEY = 'edapp:story:v1';
   const s = getScenario('meeting-friend');
   const node = s.nodes[s.startNodeId];
   const choice = node.choices[0];
-  // snapshot + restore so we don't corrupt real progress
-  const snapshot = JSON.stringify(storyStore.getState());
+  // snapshot both in-memory state AND localStorage so the test is isolated
+  // even across repeated runs (completeChoice persists to localStorage).
+  const memSnapshot = JSON.stringify(storyStore.getState());
+  const lsSnapshot = localStorage.getItem(STORY_KEY);
   try {
+    // ensure a clean slate for THIS choice regardless of prior runs/play
+    const recKey = storyStore.choiceKey(s.id, node.id, choice.id);
+    delete storyStore.state.choiceRecords[recKey];
+    const sc = storyStore.state.scenarios[s.id];
+    if (sc) sc.completedChoices = sc.completedChoices.filter(k => k !== `${node.id}::${choice.id}`);
+
     const first = storyStore.completeChoice(s, node, choice, { overallScore: 50 });
     const second = storyStore.completeChoice(s, node, choice, { overallScore: 50 });
     assert(first === (choice.xp || 10), `first award should be full (${choice.xp}), got ${first}`);
     assert(second < first, `replay XP (${second}) should be less than first (${first})`);
   } finally {
-    Object.assign(storyStore.state, JSON.parse(snapshot));
+    Object.assign(storyStore.state, JSON.parse(memSnapshot));
+    if (lsSnapshot === null) localStorage.removeItem(STORY_KEY);
+    else localStorage.setItem(STORY_KEY, lsSnapshot);
   }
 });
 

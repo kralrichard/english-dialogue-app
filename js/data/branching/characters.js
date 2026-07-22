@@ -80,6 +80,61 @@ export const CHARACTERS = {
     id: 'raj', name: 'Raj', role: 'Coworker',
     gender: 'male', accent: 'indian', avatarPreset: 'colleague_f',
     personality: 'Direct but reasonable — clear things up and it’s fine.'
+  },
+
+  // Café
+  mia: {
+    id: 'mia', name: 'Mia', role: 'Barista',
+    gender: 'female', accent: 'american', avatarPreset: 'assistant_f',
+    personality: 'Bubbly and fast; knows every regular’s order.'
+  },
+  hannah: {
+    id: 'hannah', name: 'Hannah', role: 'Old Friend',
+    gender: 'female', accent: 'british', avatarPreset: 'colleague_f',
+    personality: 'Warm and chatty; you haven’t seen her in years.'
+  },
+
+  // Supermarket & Clothing store
+  tom: {
+    id: 'tom', name: 'Tom', role: 'Store Assistant',
+    gender: 'male', accent: 'american', avatarPreset: 'clerk_m',
+    personality: 'Helpful and knows exactly which aisle everything is in.'
+  },
+  zoe: {
+    id: 'zoe', name: 'Zoe', role: 'Shop Assistant',
+    gender: 'female', accent: 'australian', avatarPreset: 'exec_f',
+    personality: 'Stylish, honest about what suits you.'
+  },
+
+  // Train station & Taxi
+  nina: {
+    id: 'nina', name: 'Nina', role: 'Ticket Clerk',
+    gender: 'female', accent: 'international', avatarPreset: 'agent_f2',
+    personality: 'Quick and precise; the queue is always moving.'
+  },
+  victor: {
+    id: 'victor', name: 'Victor', role: 'Taxi Driver',
+    gender: 'male', accent: 'international', avatarPreset: 'driver_m',
+    personality: 'Friendly, loves a bit of small talk on the road.'
+  },
+
+  // Bank & Police
+  david: {
+    id: 'david', name: 'David', role: 'Bank Teller',
+    gender: 'male', accent: 'british', avatarPreset: 'banker_m',
+    personality: 'Calm, patient, careful with the details.'
+  },
+  grant: {
+    id: 'grant', name: 'Officer Grant', role: 'Police Officer',
+    gender: 'male', accent: 'american', avatarPreset: 'officer_m',
+    personality: 'Reassuring and methodical; takes down every detail.'
+  },
+
+  // Home
+  emma: {
+    id: 'emma', name: 'Emma', role: 'Your Sister',
+    gender: 'female', accent: 'american', avatarPreset: 'receptionist_f',
+    personality: 'Cheerful morning person — unlike you.'
   }
 };
 
