@@ -625,6 +625,71 @@ test('phrasebook: an equivalent typed answer is accepted by the scorer', async (
   assert(s.accepted, `should accept, accuracy ${s.wordAccuracy}`);
 });
 
+// ---------------- shorts sentence bank + growth ----------------
+
+test('shorts bank: at least 10,000 graded sentences', async () => {
+  const { buildShortsBank, shortsCount } = await import('../js/data/shorts/sentenceBank.js');
+  const bank = buildShortsBank();
+  assert(bank.length >= 10000, `expected >= 10000 sentences, got ${bank.length}`);
+  assertEq(shortsCount(), bank.length, 'shortsCount() should match bank length');
+});
+
+test('shorts bank: every entry well-formed (en + tr + valid level + unique id)', async () => {
+  const { buildShortsBank } = await import('../js/data/shorts/sentenceBank.js');
+  const bank = buildShortsBank();
+  const levels = new Set(['A0', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2']);
+  const ids = new Set();
+  for (const s of bank) {
+    assert(s.en && s.en.trim(), `entry ${s.id} has empty en`);
+    assert(s.tr && s.tr.trim(), `entry ${s.id} has empty tr`);
+    assert(!/undefined|NaN/.test(s.en + s.tr), `entry ${s.id} has a template hole: "${s.en}" / "${s.tr}"`);
+    assert(levels.has(s.level), `entry ${s.id} bad level "${s.level}"`);
+    assert(!ids.has(s.id), `duplicate id "${s.id}"`);
+    ids.add(s.id);
+  }
+});
+
+test('shorts bank: sorted A0->C2 with every level populated', async () => {
+  const { buildShortsBank, levelBands, LEVEL_ORDER } = await import('../js/data/shorts/sentenceBank.js');
+  const bank = buildShortsBank();
+  const rank = c => LEVEL_ORDER.indexOf(c);
+  for (let i = 1; i < bank.length; i++) {
+    assert(rank(bank[i].level) >= rank(bank[i - 1].level), `not sorted at ${i}: ${bank[i - 1].level} then ${bank[i].level}`);
+  }
+  const bands = levelBands();
+  for (const lv of LEVEL_ORDER) {
+    assert(bands[lv].count > 0, `level ${lv} has no sentences`);
+  }
+});
+
+test('shorts feed: shortForLevel wraps its cursor around', async () => {
+  const { shortForLevel, sentencesForLevel } = await import('../js/data/shorts/sentenceBank.js');
+  const n = sentencesForLevel('C2').length;
+  assert(n > 0, 'C2 should have sentences');
+  assertEq(shortForLevel('C2', 0).id, shortForLevel('C2', n).id, 'cursor should wrap');
+});
+
+test('shorts bank: a sample sentence is accepted verbatim by the scorer', async () => {
+  const { sentencesForLevel } = await import('../js/data/shorts/sentenceBank.js');
+  const s = sentencesForLevel('A1').find(x => /^This is /.test(x.en));
+  assert(s, 'expected an A1 "This is ..." sentence');
+  const r = scoreAttempt({ expected: s.en, transcript: s.en.replace(/[.?!]/g, '').toLowerCase(), strictness: 'relaxed' });
+  assert(r.accepted, `should accept exact answer for "${s.en}", accuracy ${r.wordAccuracy}`);
+});
+
+test('shorts growth: stage index tracks the swipe thresholds', async () => {
+  const { shortsStore, GROWTH_THRESHOLDS } = await import('../js/progress/shortsStore.js');
+  const st = shortsStore.getState();
+  const orig = st.swipes;                 // mutate in-memory only; never _save()
+  st.swipes = 0; assertEq(shortsStore.stageIndex(), 0, 'start = A0');
+  st.swipes = GROWTH_THRESHOLDS[1]; assertEq(shortsStore.stageIndex(), 1, 'A1 at threshold[1]');
+  st.swipes = GROWTH_THRESHOLDS[1] - 1; assertEq(shortsStore.stageIndex(), 0, 'still A0 just before');
+  st.swipes = GROWTH_THRESHOLDS[6]; assertEq(shortsStore.stageIndex(), 6, 'C2 at threshold[6]');
+  st.swipes = GROWTH_THRESHOLDS[6] + 999; assertEq(shortsStore.stageIndex(), 6, 'never past the last stage');
+  st.swipes = 0; assertEq(shortsStore.currentLevel(), 'A0', 'currentLevel maps index 0 -> A0');
+  st.swipes = orig;
+});
+
 // ---------------- report ----------------
 
 (async () => {

@@ -135,6 +135,43 @@ export const CHARACTERS = {
     id: 'emma', name: 'Emma', role: 'Your Sister',
     gender: 'female', accent: 'american', avatarPreset: 'receptionist_f',
     personality: 'Cheerful morning person — unlike you.'
+  },
+
+  // School
+  mslee: {
+    id: 'mslee', name: 'Ms. Lee', role: 'Teacher',
+    gender: 'female', accent: 'american', avatarPreset: 'manager_f',
+    personality: 'Encouraging, patient, loves a good question.'
+  },
+  // Gym
+  coach: {
+    id: 'coach', name: 'Coach Max', role: 'Fitness Trainer',
+    gender: 'male', accent: 'australian', avatarPreset: 'assistant_m',
+    personality: 'High-energy and motivating, never pushy.'
+  },
+  // Museum / tourist guide
+  ava: {
+    id: 'ava', name: 'Ava', role: 'Museum Guide',
+    gender: 'female', accent: 'british', avatarPreset: 'journalist_f',
+    personality: 'A walking encyclopedia with a warm smile.'
+  },
+  // Post office
+  pat: {
+    id: 'pat', name: 'Pat', role: 'Postal Clerk',
+    gender: 'male', accent: 'american', avatarPreset: 'clerk_m',
+    personality: 'Efficient and friendly; the queue never scares him.'
+  },
+  // Library
+  ruth: {
+    id: 'ruth', name: 'Ruth', role: 'Librarian',
+    gender: 'female', accent: 'british', avatarPreset: 'exec_f',
+    personality: 'Calm and helpful, with a whisper and a smile.'
+  },
+  // Seaside
+  finn: {
+    id: 'finn', name: 'Finn', role: 'Beach Vendor',
+    gender: 'male', accent: 'international', avatarPreset: 'barista_m',
+    personality: 'Sunny and laid-back, always up for a chat.'
   }
 };
 

@@ -4,7 +4,35 @@ An interactive English-learning **life-simulation game** built on top of SpeakSc
 
 Plain HTML/CSS/JS ES modules — no build step, no dependencies.
 
-## Story Mode — branching voice conversations (newest layer)
+## Shorts — swipe-to-grow feed with 10,000+ graded sentences (newest layer)
+
+A TikTok-style **Shorts** feed (nav: 📱 Shorts, route `#/shorts`) turns growing up
+into the core loop. Each full-screen card is one real, CEFR-graded English sentence
+with its Turkish translation, a 🔊 listen / 🐢 slow button, and a 🎙️ speak button
+scored by the **same meaning-based scorer** the rest of the app uses. Swipe up (or
+wheel / ArrowDown / the ▲ hint) for the next card.
+
+- **The baby literally grows as you swipe.** The pinned avatar at the top advances
+  through all seven life stages (A0 Baby → C2 Confident Adult). Because the sentence
+  bank is level-sorted, the sentences get harder *exactly* as the character grows —
+  you start life saying single words ("Apple.", "A cat.") and end debating in C2.
+  A progress ring around the avatar fills toward the next stage; crossing a threshold
+  fires a "you grew up!" celebration and mirrors the new level into the world map.
+- **10,000+ real sentences, generated the easy way** — `js/data/shorts/sentenceBank.js`
+  combines ~40 hand-checked, level-tagged sentence *frames* with small word banks
+  (`js/data/shorts/wordBanks.js`) to deterministically build **10,704 graded
+  sentences**, each with a natural Turkish translation, spread across A0–C2. No build
+  step, no dependency, no API — and it is fully reproducible run to run (so a learner
+  resumes exactly where they left off).
+- **Honest growth vs. skill split.** Swiping = *exposure* (growing up); it never
+  claims you can speak. Speaking a card correctly earns coins and feeds the same
+  separately-tracked *measured* skill as the rest of the app — the two are never
+  conflated. Mic-denied / unsupported → typed mode automatically.
+- **New sibling save store** `edapp:shorts:v1` (`js/progress/shortsStore.js`) — swipes,
+  spoken-correct count, and a per-level cursor so the feed never repeats. The original
+  progress/review/settings/world/story keys are untouched.
+
+## Story Mode — branching voice conversations
 
 A new **Story Mode** (nav: 🎭 Story, route `#/story`) turns the app into a story-driven
 branching game. Every scene shows two characters; an NPC opens the conversation, the learner
@@ -81,7 +109,7 @@ powershell -ExecutionPolicy Bypass -File serve.ps1
 
 ## Run the tests
 
-Open `http://localhost:8123/tests/` — the suite exercises the real app modules (scorer, engine, schema, review scheduling, tapEngine, worldStore unlock logic, missionEngine, NPC resolution, mission-data integrity) in the browser and reports pass/fail counts. It snapshots and restores every `localStorage` key it touches, so running tests never corrupts your progress. 38 tests, all passing as of this build.
+Open `http://localhost:8123/tests/` — the suite exercises the real app modules (scorer, engine, schema, review scheduling, tapEngine, worldStore unlock logic, missionEngine, NPC resolution, mission-data integrity) in the browser and reports pass/fail counts. It snapshots and restores every `localStorage` key it touches, so running tests never corrupts your progress. 56 tests, all passing as of this build (6 new Shorts tests: bank size ≥ 10,000, well-formedness, A0→C2 ordering, cursor wrap, scorer acceptance, growth thresholds).
 
 ## Architecture
 

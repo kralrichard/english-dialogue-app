@@ -68,7 +68,7 @@ function updateNav(path) {
   });
   // Hide the nav during a dialogue or a full-screen branching conversation so
   // it can't be tapped mid-recording. The Story map (bare 'story') keeps it.
-  const isFullScreen = seg === 'dialogue' || /^story\/.+/.test(path) || seg === 'branchmap';
+  const isFullScreen = seg === 'dialogue' || /^story\/.+/.test(path) || seg === 'branchmap' || seg === 'shorts';
   document.getElementById('bottom-nav').style.display = isFullScreen ? 'none' : '';
 }
 

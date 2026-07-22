@@ -21,6 +21,7 @@ import { renderStoryMap } from './ui/screens/storyMapScreen.js';
 import { renderConversation } from './ui/screens/conversationScreen.js';
 import { renderBranchMap } from './ui/screens/branchMapScreen.js';
 import { renderPhrasePlaces, renderPhraseList } from './ui/screens/quickPracticeScreen.js';
+import { renderShorts } from './ui/screens/shortsScreen.js';
 import { settings } from './progress/settingsStore.js';
 
 async function boot() {
@@ -59,6 +60,7 @@ async function boot() {
   // World's "Dashboard" action card.
   document.getElementById('bottom-nav').innerHTML = `
     <a href="#/" data-nav="home"><span class="nav-ico">🗺️</span>World</a>
+    <a href="#/shorts" data-nav="shorts"><span class="nav-ico">📱</span>Shorts</a>
     <a href="#/story" data-nav="story"><span class="nav-ico">🎭</span>Story</a>
     <a href="#/practice" data-nav="practice"><span class="nav-ico">🎙️</span>Practice</a>
     <a href="#/review" data-nav="review"><span class="nav-ico">🔁</span>Review</a>
@@ -66,6 +68,7 @@ async function boot() {
 
   registerRoute('', renderWorld);
   registerRoute('home', renderHome);
+  registerRoute('shorts', renderShorts);
   registerRoute('story', renderStoryMap);
   registerRoute('story/:id', renderConversation);
   registerRoute('branchmap/:id', renderBranchMap);

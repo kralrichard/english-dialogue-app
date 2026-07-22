@@ -15,6 +15,14 @@ import { trainTicket, taxiRide } from './travel.js';
 import { bankLostCard, policeLostPhone } from './services.js';
 import { homeMorning } from './home.js';
 import { hotelAmenities, passportControl, restaurantBill } from './extras.js';
+import { HOSPITALITY } from '../generated/gen-hospitality.js';
+import { TRAVEL } from '../generated/gen-travel.js';
+import { HEALTH } from '../generated/gen-health.js';
+import { SHOPS_SERVICES } from '../generated/gen-shops-services.js';
+import { DAILY } from '../generated/gen-daily.js';
+import { PLACES } from '../generated/gen-places.js';
+import { MORE1 } from '../generated/gen-more1.js';
+import { MORE2 } from '../generated/gen-more2.js';
 
 export const ALL_SCENARIOS = [
   // originals
@@ -31,7 +39,10 @@ export const ALL_SCENARIOS = [
   bankLostCard, policeLostPhone,
   homeMorning,
   // extra depth for existing environments
-  hotelAmenities, passportControl, restaurantBill
+  hotelAmenities, passportControl, restaurantBill,
+  // bulk-authored branching scenarios (compact mini() builder)
+  ...HOSPITALITY, ...TRAVEL, ...HEALTH, ...SHOPS_SERVICES, ...DAILY,
+  ...PLACES, ...MORE1, ...MORE2
 ];
 
 // Cache each scenario's total choice count on the object (used for progress %
@@ -61,7 +72,13 @@ export const STORY_ENVIRONMENTS = [
   { id: 'police',     label: 'Police Station', labelTr: 'Karakol', icon: '🚓', sceneType: 'formal-office' },
   { id: 'street',     label: 'Out & About', labelTr: 'Dışarıda',   icon: '🚶', sceneType: 'street' },
   { id: 'workplace',  label: 'Workplace',   labelTr: 'İş Yeri',    icon: '💼', sceneType: 'formal-office' },
-  { id: 'home',       label: 'Home',        labelTr: 'Ev',         icon: '🏠', sceneType: 'home' }
+  { id: 'home',       label: 'Home',        labelTr: 'Ev',         icon: '🏠', sceneType: 'home' },
+  { id: 'school',     label: 'School',      labelTr: 'Okul',       icon: '🏫', sceneType: 'school' },
+  { id: 'gym',        label: 'Gym',         labelTr: 'Spor Salonu', icon: '🏋️', sceneType: 'gym' },
+  { id: 'museum',     label: 'Museum',      labelTr: 'Müze',       icon: '🏛️', sceneType: 'formal-office' },
+  { id: 'postoffice', label: 'Post Office', labelTr: 'Postane',    icon: '📮', sceneType: 'retail' },
+  { id: 'library',    label: 'Library',     labelTr: 'Kütüphane',  icon: '📚', sceneType: 'school' },
+  { id: 'seaside',    label: 'Seaside',     labelTr: 'Sahil',      icon: '🏖️', sceneType: 'seaside' }
 ];
 
 export function scenariosForEnvironment(envId) {
