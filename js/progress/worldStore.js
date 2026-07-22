@@ -137,6 +137,10 @@ export function isLocationUnlocked(locationId) {
   const loc = getLocation(locationId);
   if (!loc) return false;
   if (worldStore.getState().unlockedLocationIds.includes(locationId)) return true;
+  // Every featured location on the world map is open from the start -- no
+  // locks. (Level still shapes the *recommended* order and the measured-skill
+  // display, but it never blocks access.)
+  if (loc.featured) return true;
   if (!loc.minWorldLevel) return false;
   return worldLevelIndex(worldStore.getState().worldLevel) >= worldLevelIndex(loc.minWorldLevel);
 }

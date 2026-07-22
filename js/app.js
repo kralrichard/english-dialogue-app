@@ -20,6 +20,7 @@ import { renderLevelSelect } from './ui/screens/levelSelectScreen.js';
 import { renderStoryMap } from './ui/screens/storyMapScreen.js';
 import { renderConversation } from './ui/screens/conversationScreen.js';
 import { renderBranchMap } from './ui/screens/branchMapScreen.js';
+import { renderPhrasePlaces, renderPhraseList } from './ui/screens/quickPracticeScreen.js';
 import { settings } from './progress/settingsStore.js';
 
 async function boot() {
@@ -68,6 +69,8 @@ async function boot() {
   registerRoute('story', renderStoryMap);
   registerRoute('story/:id', renderConversation);
   registerRoute('branchmap/:id', renderBranchMap);
+  registerRoute('practice-phrases', renderPhrasePlaces);
+  registerRoute('practice-phrases/:placeId', renderPhraseList);
   registerRoute('practice', renderPicker);
   registerRoute('dialogue/:id', renderDialogue);
   registerRoute('progress', renderProgress);

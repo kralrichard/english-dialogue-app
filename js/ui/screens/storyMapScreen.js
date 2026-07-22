@@ -58,6 +58,12 @@ export function renderStoryMap(container) {
         <div class="stat-tile"><span class="stat-n">${doneChoices}/${totalChoices}</span><span class="stat-l">Branches</span></div>
       </div>
 
+      <button class="quick-banner" id="quick-practice-btn">
+        <span class="qb-ico">⚡</span>
+        <span class="qb-txt"><b>Hızlı Pratik — 200+ cümle</b><span>Her yer için gerçek cümleleri konuşarak çalış</span></span>
+        <span class="qb-arrow">›</span>
+      </button>
+
       <div class="lvl-chips" role="group" aria-label="Filter by level">${levelChips}</div>
 
       ${envSections || `<p class="story-empty">No scenarios at this level yet. Try “All levels”.</p>`}
@@ -74,6 +80,7 @@ export function renderStoryMap(container) {
     c.addEventListener('click', () => navigate(`story/${c.dataset.scenario}`));
   });
   container.querySelector('#achv-btn')?.addEventListener('click', () => showAchievements(container));
+  container.querySelector('#quick-practice-btn')?.addEventListener('click', () => navigate('practice-phrases'));
 
   return () => {};
 }

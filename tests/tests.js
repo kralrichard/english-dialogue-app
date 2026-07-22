@@ -370,13 +370,13 @@ test('world: isLocationUnlocked honors manual unlock and level threshold', async
     progressStore.state = freshProgressState();
 
     assert(isLocationUnlocked('home'), 'home is explicitly unlocked from the default state');
-    assert(!isLocationUnlocked('hotel'), 'hotel needs A1, not reachable at A0');
-    worldStore.setWorldLevel('A1');
-    assert(isLocationUnlocked('hotel'), 'raising world level unlocks hotel (minWorldLevel A1)');
-    worldStore.setWorldLevel('A0');
-    assert(!isLocationUnlocked('hotel'), 'lowering level re-locks a level-only (non-sticky) location');
-    worldStore.unlockLocation('hotel');
-    assert(isLocationUnlocked('hotel'), 'explicit unlock is sticky even below the required level');
+    // New rule: every FEATURED world-map location is always open (no locks).
+    assert(isLocationUnlocked('hotel'), 'featured locations are open from the start (no locks)');
+    // A non-featured location without an explicit unlock is not reachable...
+    assert(!isLocationUnlocked('seaside'), 'a non-featured location is not open by default');
+    // ...until it is explicitly unlocked, which is sticky.
+    worldStore.unlockLocation('seaside');
+    assert(isLocationUnlocked('seaside'), 'explicit unlock is sticky');
   } finally {
     if (wBackup === null) localStorage.removeItem(WKEY); else localStorage.setItem(WKEY, wBackup);
     if (pBackup === null) localStorage.removeItem(PKEY); else localStorage.setItem(PKEY, pBackup);
@@ -601,6 +601,28 @@ test('vocabulary: lookupWord finds a known word and falls back gracefully', asyn
   assert(lookupWord('Reservation,').tr === 'rezervasyon', 'should strip punctuation/case');
   const miss = lookupWord('zxqwv');
   assert(miss && miss.tr === null, 'unknown word should return a safe fallback');
+});
+
+test('phrasebook: has at least 200 unique, well-formed entries', async () => {
+  const { PHRASEBOOK, PHRASE_PLACES } = await import('../js/data/branching/phrasebook.js');
+  assert(PHRASEBOOK.length >= 200, `expected >= 200 phrases, got ${PHRASEBOOK.length}`);
+  const ids = new Set();
+  const levels = new Set(['A0', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2']);
+  for (const p of PHRASEBOOK) {
+    assert(p.en && p.tr, `phrase ${p.id} missing en/tr`);
+    assert(levels.has(p.level), `phrase ${p.id} bad level "${p.level}"`);
+    assert(PHRASE_PLACES[p.locationId], `phrase ${p.id} unknown place "${p.locationId}"`);
+    assert(!ids.has(p.id), `duplicate phrase id "${p.id}"`);
+    ids.add(p.id);
+  }
+});
+
+test('phrasebook: an equivalent typed answer is accepted by the scorer', async () => {
+  const { PHRASEBOOK } = await import('../js/data/branching/phrasebook.js');
+  const p = PHRASEBOOK.find(x => x.en === 'I have a reservation.');
+  assert(p, 'expected the hotel reservation phrase to exist');
+  const s = scoreAttempt({ expected: p.en, transcript: 'i have a reservation', strictness: 'relaxed' });
+  assert(s.accepted, `should accept, accuracy ${s.wordAccuracy}`);
 });
 
 // ---------------- report ----------------
