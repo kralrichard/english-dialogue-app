@@ -17,6 +17,9 @@ import { renderPlacementTest } from './ui/screens/placementTestScreen.js';
 import { renderWelcome } from './ui/screens/welcomeScreen.js';
 import { renderCharacterCreation } from './ui/screens/characterCreationScreen.js';
 import { renderLevelSelect } from './ui/screens/levelSelectScreen.js';
+import { renderStoryMap } from './ui/screens/storyMapScreen.js';
+import { renderConversation } from './ui/screens/conversationScreen.js';
+import { renderBranchMap } from './ui/screens/branchMapScreen.js';
 import { settings } from './progress/settingsStore.js';
 
 async function boot() {
@@ -25,11 +28,15 @@ async function boot() {
   // Load + validate the dialogue library. createDialogue() throws on
   // malformed content, so a bad content file fails loudly here with the
   // offending dialogue id -- it can never half-render inside a lesson.
-  let dialogueCount;
+  let dialogueCount, scenarioCount = 0;
   try {
     const mod = await import('./data/dialogues/index.js');
     dialogueCount = mod.ALL_DIALOGUES.length;
     if (!dialogueCount) throw new Error('No dialogues registered.');
+    // Load + validate the branching Story Mode content. createScenario()
+    // throws on a malformed graph, so a bad scenario fails loudly here.
+    const story = await import('./data/branching/scenarios/index.js');
+    scenarioCount = story.ALL_SCENARIOS.length;
   } catch (e) {
     screen.innerHTML = `
       <div class="boot-error" role="alert">
@@ -51,13 +58,16 @@ async function boot() {
   // World's "Dashboard" action card.
   document.getElementById('bottom-nav').innerHTML = `
     <a href="#/" data-nav="home"><span class="nav-ico">🗺️</span>World</a>
+    <a href="#/story" data-nav="story"><span class="nav-ico">🎭</span>Story</a>
     <a href="#/practice" data-nav="practice"><span class="nav-ico">🎙️</span>Practice</a>
     <a href="#/review" data-nav="review"><span class="nav-ico">🔁</span>Review</a>
-    <a href="#/progress" data-nav="progress"><span class="nav-ico">📈</span>Progress</a>
-    <a href="#/settings" data-nav="settings"><span class="nav-ico">⚙️</span>Settings</a>`;
+    <a href="#/progress" data-nav="progress"><span class="nav-ico">📈</span>Progress</a>`;
 
   registerRoute('', renderWorld);
   registerRoute('home', renderHome);
+  registerRoute('story', renderStoryMap);
+  registerRoute('story/:id', renderConversation);
+  registerRoute('branchmap/:id', renderBranchMap);
   registerRoute('practice', renderPicker);
   registerRoute('dialogue/:id', renderDialogue);
   registerRoute('progress', renderProgress);

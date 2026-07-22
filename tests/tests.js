@@ -466,6 +466,132 @@ test('missions: every completeDialogue requirement references a real dialogue id
   }
 });
 
+// ---------------- Story Mode: branching engine, schema, store ----------------
+
+test('scenarios: every scenario passes schema validation at import', async () => {
+  const { ALL_SCENARIOS } = await import('../js/data/branching/scenarios/index.js');
+  assert(ALL_SCENARIOS.length >= 12, `expected >= 12 scenarios, got ${ALL_SCENARIOS.length}`);
+});
+
+test('scenarios: every choice.next and node.next targets a real node or ending', async () => {
+  const { ALL_SCENARIOS } = await import('../js/data/branching/scenarios/index.js');
+  for (const s of ALL_SCENARIOS) {
+    const isTarget = (id) => s.nodes[id] || s.endings[id];
+    for (const node of Object.values(s.nodes)) {
+      if (node.next) assert(isTarget(node.next), `${s.id}:${node.id}.next -> "${node.next}" missing`);
+      if (node.endingId) assert(s.endings[node.endingId], `${s.id}:${node.id}.endingId missing`);
+      (node.choices || []).forEach(c => assert(isTarget(c.next), `${s.id}:${node.id}:${c.id}.next -> "${c.next}" missing`));
+    }
+  }
+});
+
+test('scenarios: every decision node offers at least 2 choices', async () => {
+  const { ALL_SCENARIOS } = await import('../js/data/branching/scenarios/index.js');
+  for (const s of ALL_SCENARIOS) {
+    for (const node of Object.values(s.nodes)) {
+      if (node.choices) assert(node.choices.length >= 2, `${s.id}:${node.id} has < 2 choices`);
+    }
+  }
+});
+
+test('scenarios: every ending is reachable from the start node', async () => {
+  const { ALL_SCENARIOS } = await import('../js/data/branching/scenarios/index.js');
+  for (const s of ALL_SCENARIOS) {
+    const reached = new Set();
+    const seenNodes = new Set();
+    const stack = [s.startNodeId];
+    while (stack.length) {
+      const id = stack.pop();
+      if (s.endings[id]) { reached.add(id); continue; }
+      if (seenNodes.has(id) || !s.nodes[id]) continue;
+      seenNodes.add(id);
+      const n = s.nodes[id];
+      if (n.endingId) reached.add(n.endingId);
+      if (n.next) stack.push(n.next);
+      (n.choices || []).forEach(c => stack.push(c.next));
+    }
+    for (const eid of Object.keys(s.endings)) assert(reached.has(eid), `${s.id}: ending "${eid}" is unreachable`);
+  }
+});
+
+test('branchEngine: different choices lead to different next nodes', async () => {
+  const { BranchEngine } = await import('../js/engine/branchEngine.js');
+  const { getScenario } = await import('../js/data/branching/scenarios/index.js');
+  const s = getScenario('hotel-checkin');
+  const e1 = new BranchEngine(s);
+  const start = e1.currentNode();
+  assert(start.choices.length >= 2, 'start should be a decision point');
+  const a = new BranchEngine(s);
+  const b = new BranchEngine(s);
+  const resA = a.commitChoice(start.choices[0].id);
+  const resB = b.commitChoice(start.choices[1].id);
+  const nodeA = resA.node ? resA.node.id : (resA.ending && resA.ending.id);
+  const nodeB = resB.node ? resB.node.id : (resB.ending && resB.ending.id);
+  assert(nodeA !== nodeB, `two choices led to the same place: ${nodeA}`);
+});
+
+test('branchEngine: back() returns to a previous decision, keeping explored marks', async () => {
+  const { BranchEngine } = await import('../js/engine/branchEngine.js');
+  const { getScenario } = await import('../js/data/branching/scenarios/index.js');
+  const e = new BranchEngine(getScenario('hotel-checkin'));
+  const startId = e.currentNodeId;
+  const firstChoice = e.currentNode().choices[0].id;
+  e.commitChoice(firstChoice);
+  assert(e.currentNodeId !== startId || e.isAtEnding(), 'engine should have advanced');
+  const ok = e.back();
+  assert(ok, 'back() should succeed');
+  assert(e.currentNodeId === startId, `back should return to "${startId}", got "${e.currentNodeId}"`);
+  assert(e.choiceStatus(startId, firstChoice) === 'attempted', 'explored mark should survive rewind');
+});
+
+test('branchEngine: commitChoice throws when not at a decision point (guard)', async () => {
+  const { BranchEngine } = await import('../js/engine/branchEngine.js');
+  const { getScenario } = await import('../js/data/branching/scenarios/index.js');
+  const e = new BranchEngine(getScenario('airport-checkin'));
+  // walk to an ending, then committing again must throw
+  let guard = 0;
+  while (!e.isAtEnding() && guard++ < 50) {
+    const n = e.currentNode();
+    if (n && n.choices) e.commitChoice(n.choices[0].id); else break;
+  }
+  let threw = false;
+  try { e.commitChoice('anything'); } catch { threw = true; }
+  assert(threw, 'commitChoice at an ending should throw');
+});
+
+test('storyStore: XP is full first time then reduced practice XP (anti-farm)', async () => {
+  const { storyStore } = await import('../js/progress/storyStore.js');
+  const { getScenario } = await import('../js/data/branching/scenarios/index.js');
+  const s = getScenario('meeting-friend');
+  const node = s.nodes[s.startNodeId];
+  const choice = node.choices[0];
+  // snapshot + restore so we don't corrupt real progress
+  const snapshot = JSON.stringify(storyStore.getState());
+  try {
+    const first = storyStore.completeChoice(s, node, choice, { overallScore: 50 });
+    const second = storyStore.completeChoice(s, node, choice, { overallScore: 50 });
+    assert(first === (choice.xp || 10), `first award should be full (${choice.xp}), got ${first}`);
+    assert(second < first, `replay XP (${second}) should be less than first (${first})`);
+  } finally {
+    Object.assign(storyStore.state, JSON.parse(snapshot));
+  }
+});
+
+test('storyStore: relationship tier rises with positive effects', async () => {
+  const { relationshipTier } = await import('../js/progress/storyStore.js');
+  assert(relationshipTier(0).id === 'stranger', 'zero should be stranger');
+  assert(relationshipTier(8).id === 'friend', '8 should be friend');
+  assert(relationshipTier(20).id === 'trusted', '20 should be trusted');
+});
+
+test('vocabulary: lookupWord finds a known word and falls back gracefully', async () => {
+  const { lookupWord } = await import('../js/data/branching/vocabulary.js');
+  assert(lookupWord('reservation').tr === 'rezervasyon', 'should find reservation');
+  assert(lookupWord('Reservation,').tr === 'rezervasyon', 'should strip punctuation/case');
+  const miss = lookupWord('zxqwv');
+  assert(miss && miss.tr === null, 'unknown word should return a safe fallback');
+});
+
 // ---------------- report ----------------
 
 (async () => {

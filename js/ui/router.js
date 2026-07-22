@@ -66,8 +66,10 @@ function updateNav(path) {
   document.querySelectorAll('.bottom-nav a').forEach(a => {
     a.classList.toggle('active', a.dataset.nav === seg || (seg === 'home' && a.dataset.nav === 'home'));
   });
-  // Hide the nav during a dialogue so it can't be tapped mid-recording.
-  document.getElementById('bottom-nav').style.display = seg === 'dialogue' ? 'none' : '';
+  // Hide the nav during a dialogue or a full-screen branching conversation so
+  // it can't be tapped mid-recording. The Story map (bare 'story') keeps it.
+  const isFullScreen = seg === 'dialogue' || /^story\/.+/.test(path) || seg === 'branchmap';
+  document.getElementById('bottom-nav').style.display = isFullScreen ? 'none' : '';
 }
 
 export function startRouter() {

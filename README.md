@@ -4,6 +4,36 @@ An interactive English-learning **life-simulation game** built on top of SpeakSc
 
 Plain HTML/CSS/JS ES modules — no build step, no dependencies.
 
+## Story Mode — branching voice conversations (newest layer)
+
+A new **Story Mode** (nav: 🎭 Story, route `#/story`) turns the app into a story-driven
+branching game. Every scene shows two characters; an NPC opens the conversation, the learner
+picks *what they want to say* from 2–4 intentions, then **speaks the chosen English sentence
+aloud** (mic, with a typed fallback). The NPC reacts differently per choice, and each answer
+can lead to a different branch, emotion, or ending. Learners can rewind to any earlier decision
+and try the other choices without losing progress.
+
+- **True branching dialogue graph engine** — `js/engine/branchEngine.js` (DOM-free, unit-tested):
+  node/choice graph traversal, decision history, rewind, and branch-completion tracking. Content
+  lives in structured data files (`js/data/branching/`), not in the UI.
+- **12 complete scenarios across 7 environments** (hotel, airport, hospital, pharmacy, restaurant,
+  street/social, workplace): hotel check-in, hotel room problem, airport check-in, missing flight,
+  hospital visit, pharmacy visit, restaurant order, wrong order, meeting a friend, asking directions,
+  job interview, workplace misunderstanding — each with 2–4 branches per decision and **multiple endings**.
+- **Spoken-answer evaluation reuses the original meaning-based scorer** (`js/speech/scorer.js`) —
+  accepts contractions and equivalent phrasings, rejects meaning-inverting mistakes, gives useful
+  feedback, unlimited retries. Mic-denied / unsupported → automatic typed mode. Hard timeout so no
+  screen hangs on "listening".
+- **Branch history timeline + visual branch map** (`#/branchmap/:id`) marking each choice
+  unexplored / attempted / completed / mastered, and which endings were found.
+- **Turkish support throughout** (intention labels, translations, grammar notes), **tappable-word
+  glossary**, emotive SVG NPC faces, relationships, XP/coins (anti-farm), and 8 achievements.
+- **New sibling save store** `edapp:story:v1` (`js/progress/storyStore.js`) — the original
+  progress/review/settings/world keys are untouched.
+- **Tested**: 48/48 automated tests pass (9 new Story Mode tests), full browser playthrough of
+  multiple branches verified (branch advance, rewind, mastery marking, endings, branch map, no
+  console errors, no mobile overflow).
+
 ## What was built (life-adventure layer)
 
 On top of the original SpeakScenes dialogue app (kept fully intact — see "Original SpeakScenes systems" below), this adds:
