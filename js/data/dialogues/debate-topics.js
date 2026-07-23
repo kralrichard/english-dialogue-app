@@ -109,5 +109,81 @@ export const DEBATE_TOPICS_DIALOGUES = [
         pronunciationTips: ['Use a falling, settled tone on "than use it as an excuse" — it should sound like a firm conclusion, not a hedge.']
       }
     ]
+  }),
+
+  createDialogue({
+    id: 'debate-topics-cultural-discussion-c1-01',
+    locationId: 'debate-topics',
+    scenarioId: 'cultural-discussion',
+    title: 'Discussing Cultural Differences',
+    level: 'C1',
+    length: 'long',
+    goal: 'Discuss cultural difference thoughtfully, disagreeing without stereotyping.',
+    tags: ['abstract-discussion'],
+    sceneType: 'cafe',
+    characters: {
+      A: { name: 'Ingrid', role: 'Friend', gender: 'female', accent: 'international', avatarPreset: 'journalist_f' },
+      B: { name: 'You', role: 'Friend', gender: 'neutral', accent: 'american', avatarPreset: 'guest_neutral' }
+    },
+    turns: [
+      { speaker: 'A', text: 'I find people here quite closed off compared to back home. Is that fair?', translation_tr: 'Buradaki insanları memleketimdekilere kıyasla oldukça kapalı buluyorum. Bu adil bir yorum mu?', emotion: 'curious', register: 'informal' },
+      {
+        speaker: 'B', expected: 'I’d push back on that slightly — I think it’s more about how quickly warmth is shown.',
+        altAccepted: ['I’d frame it differently: the warmth is there, it just takes longer to appear.', 'I’m not sure "closed off" is right — it may be a difference in pace rather than openness.'],
+        translation_tr: 'Buna hafifçe itiraz ederim — bence mesele sıcaklığın ne kadar çabuk gösterildiğiyle ilgili.',
+        register: 'informal', ipa: '/aɪd pʊʃ bæk ɒn ðæt ˈslaɪtli/',
+        grammar: [
+          { word: 'I’d push back on that', role: 'idiomatic disagreement', note: 'A confident but non-aggressive way to challenge a claim in discussion.' },
+          { word: 'slightly', role: 'softening adverb', note: 'Signals partial rather than total disagreement — keeps the exchange collaborative.' },
+          { word: 'it’s more about', role: 'reframing structure', note: 'Redirects the discussion from one explanation to a better one.' }
+        ],
+        keyExpressions: [{ phrase: 'push back on something', meaning: 'to challenge an idea politely but firmly' }],
+        exampleSentences: ['I’d push back on that assumption.', 'It’s more about timing than money.'],
+        pronunciationTips: ['Stress "slightly" — it does the diplomatic work of the sentence.']
+      },
+      { speaker: 'A', text: 'That’s a generous reading. But surely some cultures genuinely are more reserved?', translation_tr: 'Bu cömert bir yorum. Ama bazı kültürler gerçekten daha çekingen değil mi?', emotion: 'thinking', register: 'informal' },
+      {
+        speaker: 'B', expected: 'Possibly, though I’d be careful about generalising from a few encounters.',
+        altAccepted: ['Perhaps, but individual variation within a culture is usually greater than between cultures.', 'Maybe, though small samples can be misleading.'],
+        translation_tr: 'Muhtemelen, yine de birkaç karşılaşmadan genelleme yapma konusunda dikkatli olurum.',
+        register: 'informal', ipa: '/aɪd biː ˈkeərfəl əˈbaʊt ˈdʒenərəlaɪzɪŋ/',
+        grammar: [
+          { word: 'Possibly, though', role: 'concession + counterpoint', note: 'Grants the point partially before qualifying it — a hallmark of C1 discussion.' },
+          { word: 'I’d be careful about', role: 'hedged caution', note: 'Warns against a conclusion without accusing the other person of prejudice.' },
+          { word: 'generalising', role: 'gerund after preposition', note: 'After "about," the verb must take -ing.' }
+        ],
+        keyExpressions: [{ phrase: 'I’d be careful about...', meaning: 'a diplomatic way to warn against a conclusion' }],
+        exampleSentences: ['I’d be careful about drawing conclusions.', 'It’s risky to generalise.'],
+        pronunciationTips: ['"generalising" has four syllables: GEN-ral-ize-ing.']
+      },
+      { speaker: 'A', text: 'Fair. So how would you explain the difference I’m noticing?', translation_tr: 'Haklısın. Peki fark ettiğim bu farkı nasıl açıklarsın?', emotion: 'curious', register: 'informal' },
+      {
+        speaker: 'B', expected: 'A lot of it comes down to what counts as polite. Silence can mean respect in one place and coldness in another.',
+        altAccepted: ['Much of it is about differing norms of politeness rather than feeling.', 'It may be that the same behaviour carries opposite meanings in each culture.'],
+        translation_tr: 'Bunun büyük kısmı neyin nezaket sayıldığıyla ilgili. Sessizlik bir yerde saygı, başka bir yerde soğukluk anlamına gelebilir.',
+        register: 'informal', ipa: '/ə lɒt əv ɪt kʌmz daʊn tuː wɒt kaʊnts æz pəˈlaɪt/',
+        grammar: [
+          { word: 'comes down to', role: 'idiom', note: 'Means "the essential explanation is" — used to identify a root cause.' },
+          { word: 'can mean', role: 'modal of possibility', note: '"Can" here expresses what is possible in general, not permission.' }
+        ],
+        keyExpressions: [{ phrase: 'it comes down to', meaning: 'the fundamental issue is' }],
+        exampleSentences: ['It comes down to trust.', 'Silence can mean many things.'],
+        pronunciationTips: ['Group the sentence into two clear halves with a pause between them.']
+      },
+      { speaker: 'A', text: 'That reframes it usefully. I hadn’t considered that silence could be read so differently.', translation_tr: 'Bu, konuyu faydalı biçimde yeniden çerçeveliyor. Sessizliğin bu kadar farklı okunabileceğini düşünmemiştim.', emotion: 'surprised', register: 'informal' },
+      {
+        speaker: 'B', expected: 'It took me a while to see it too — I misread a lot of situations at first.',
+        altAccepted: ['I only realised it after living here a few years.', 'I got it wrong plenty of times before it clicked.'],
+        translation_tr: 'Benim de görmem zaman aldı — başta birçok durumu yanlış okudum.',
+        register: 'informal', ipa: '/ɪt tʊk miː ə waɪl tuː siː ɪt tuː/',
+        grammar: [
+          { word: 'It took me a while', role: 'time expression', note: 'Means the process required considerable time — modest and relatable.' },
+          { word: 'misread', role: 'prefix mis- + verb', note: '"Mis-" means wrongly: misread, misunderstand, misjudge. Past form is also "misread".' }
+        ],
+        keyExpressions: [{ phrase: 'it took me a while', meaning: 'I needed time to understand' }],
+        exampleSentences: ['It took me a while to adjust.', 'I misread the situation.'],
+        pronunciationTips: ['Past "misread" is pronounced "mis-RED", present is "mis-REED".']
+      }
+    ]
   })
 ];

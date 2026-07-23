@@ -46,5 +46,111 @@ export const PHONE_CALL_DIALOGUES = [
         pronunciationTips: ['Stress the second syllable of "reschedule": re-SCHED-ule.']
       }
     ]
+  }),
+
+  createDialogue({
+    id: 'phone-call-making-appointment-a2-01',
+    locationId: 'phone-call',
+    scenarioId: 'making-appointment',
+    title: 'Making an Appointment by Phone',
+    level: 'A2',
+    length: 'short',
+    goal: 'Book an appointment and confirm the details on the phone.',
+    tags: ['booking'],
+    sceneType: 'home',
+    characters: {
+      A: { name: 'Sarah', role: 'Receptionist', gender: 'female', accent: 'british', avatarPreset: 'receptionist_f' },
+      B: { name: 'You', role: 'Caller', gender: 'neutral', accent: 'american', avatarPreset: 'guest_neutral' }
+    },
+    turns: [
+      { speaker: 'A', text: 'Good morning, Riverside Clinic. How can I help?', translation_tr: 'Günaydın, Riverside Kliniği. Nasıl yardımcı olabilirim?', emotion: 'friendly', register: 'formal' },
+      {
+        speaker: 'B', expected: 'Hello, I’d like to make an appointment with Dr Shah.',
+        altAccepted: ['Hi, could I book an appointment with Dr Shah?', 'Good morning — I need to see Dr Shah, please.'],
+        translation_tr: 'Merhaba, Dr Shah ile randevu almak istiyorum.',
+        register: 'formal', ipa: '/aɪd laɪk tuː meɪk ən əˈpɔɪntmənt/',
+        grammar: [
+          { word: 'make an appointment', role: 'fixed collocation', note: 'English "makes" or "books" an appointment — never "takes" one.' },
+          { word: 'with Dr Shah', role: 'preposition', note: 'You have an appointment WITH a person, AT a place.' }
+        ],
+        keyExpressions: [{ phrase: 'make an appointment', meaning: 'arrange a fixed time to meet a professional' }],
+        exampleSentences: ['I made an appointment for Tuesday.', 'Can I book an appointment?'],
+        pronunciationTips: ['"appointment" is stressed in the middle: a-POINT-ment.']
+      },
+      { speaker: 'A', text: 'She has a slot on Thursday at ten, or Friday at three.', translation_tr: 'Perşembe onda veya cuma üçte yeri var.', emotion: 'neutral', register: 'formal' },
+      {
+        speaker: 'B', expected: 'Thursday at ten would be better for me.',
+        altAccepted: ['I’ll take Thursday morning, please.', 'Ten on Thursday suits me best.'],
+        translation_tr: 'Perşembe saat on benim için daha iyi olur.',
+        register: 'formal', ipa: '/ˈθɜːrzdeɪ æt ten wʊd biː ˈbetər fɔːr miː/',
+        grammar: [
+          { word: 'would be better', role: 'polite comparative', note: '"Would" softens the preference so it does not sound like a demand.' },
+          { word: 'slot', role: 'noun (speaker A)', note: 'An available period of time in a schedule.' }
+        ],
+        keyExpressions: [{ phrase: 'that suits me', meaning: 'that time is convenient for me' }],
+        exampleSentences: ['Monday would be better for us.', 'Does two o’clock suit you?'],
+        pronunciationTips: ['"Thursday" starts with the th sound — put your tongue between your teeth.']
+      }
+    ]
+  }),
+
+  createDialogue({
+    id: 'phone-call-customer-service-call-b1-01',
+    locationId: 'phone-call',
+    scenarioId: 'customer-service-call',
+    title: 'Calling Customer Service',
+    level: 'B1',
+    length: 'medium',
+    goal: 'Explain a billing problem on the phone and get it resolved.',
+    tags: ['complaint', 'problem-solving'],
+    sceneType: 'home',
+    characters: {
+      A: { name: 'Kevin', role: 'Customer Service Agent', gender: 'male', accent: 'american', avatarPreset: 'assistant_m' },
+      B: { name: 'You', role: 'Customer', gender: 'neutral', accent: 'american', avatarPreset: 'guest_neutral' }
+    },
+    turns: [
+      { speaker: 'A', text: 'Thanks for holding. How can I help you today?', translation_tr: 'Beklediğiniz için teşekkürler. Bugün nasıl yardımcı olabilirim?', emotion: 'friendly', register: 'formal' },
+      {
+        speaker: 'B', expected: 'I’ve been charged twice for the same order.',
+        altAccepted: ['There’s a duplicate charge on my account.', 'My card was debited two times for one purchase.'],
+        translation_tr: 'Aynı sipariş için iki kez ücretlendirildim.',
+        register: 'formal', ipa: '/aɪv bɪn tʃɑːrdʒd twaɪs fɔːr ðə seɪm ˈɔːrdər/',
+        grammar: [
+          { word: 'I’ve been charged', role: 'present perfect passive', note: 'The focus is on you and the result; who made the error is not the point yet.' },
+          { word: 'twice', role: 'frequency adverb', note: 'Means two times — more natural than saying "two times" here.' }
+        ],
+        keyExpressions: [{ phrase: 'charged twice', meaning: 'billed two times for one purchase' }],
+        exampleSentences: ['I’ve been charged for delivery.', 'We were billed twice.'],
+        pronunciationTips: ['"charged" is one syllable, ending in a /d͡ʒd/ sound.']
+      },
+      { speaker: 'A', text: 'I’m sorry about that. Could you give me the order number?', translation_tr: 'Bunun için üzgünüm. Sipariş numarasını verebilir misiniz?', emotion: 'apologetic', register: 'formal' },
+      {
+        speaker: 'B', expected: 'It’s A as in Alpha, four, nine, two, seven.',
+        altAccepted: ['Yes — A, four nine two seven.', 'The number is A-4927. Shall I repeat it?'],
+        translation_tr: 'A — Alpha’daki gibi — dört, dokuz, iki, yedi.',
+        register: 'formal', ipa: '/eɪ æz ɪn ˈælfə fɔːr naɪn tuː ˈsevən/',
+        grammar: [
+          { word: 'A as in Alpha', role: 'clarification device', note: 'Naming a word that starts with the letter prevents confusion on the phone.' },
+          { word: 'four, nine, two, seven', role: 'digit-by-digit', note: 'Reference numbers are read one digit at a time, with small pauses.' }
+        ],
+        keyExpressions: [{ phrase: 'X as in Y', meaning: 'clarifying a letter by giving an example word' }],
+        exampleSentences: ['M as in Mary.', 'That’s S for Sugar.'],
+        pronunciationTips: ['Pause briefly between digits — clarity beats speed on the phone.']
+      },
+      { speaker: 'A', text: 'I can see the duplicate. I’ll refund it today.', translation_tr: 'Mükerrer işlemi görüyorum. Bugün iade edeceğim.', emotion: 'neutral', register: 'formal' },
+      {
+        speaker: 'B', expected: 'Thank you. Could you send me an email confirming that?',
+        altAccepted: ['Great — please confirm it by email.', 'Thanks. May I have written confirmation?'],
+        translation_tr: 'Teşekkürler. Bunu onaylayan bir e-posta gönderebilir misiniz?',
+        register: 'formal', ipa: '/kʊd juː send miː ən ˈiːmeɪl kənˈfɜːrmɪŋ ðæt/',
+        grammar: [
+          { word: 'confirming that', role: 'participle clause', note: 'Short for "which confirms that" — compact and professional.' },
+          { word: 'send me an email', role: 'double object', note: 'English allows "send someone something" without "to".' }
+        ],
+        keyExpressions: [{ phrase: 'confirm it in writing', meaning: 'get a written record of the agreement' }],
+        exampleSentences: ['Could you email me the receipt?'],
+        pronunciationTips: ['Always ask for written confirmation — and say it as a polite request, not a demand.']
+      }
+    ]
   })
 ];

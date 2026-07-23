@@ -6,6 +6,36 @@
       "runtimeExecutable": "powershell",
       "runtimeArgs": ["-ExecutionPolicy", "Bypass", "-File", "C:\\Users\\elizz\\english-dialogue-app\\serve.ps1", "-Port", "8123"],
       "port": 8123
+    },
+    {
+      "name": "ss-almanca",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-ExecutionPolicy", "Bypass", "-File", "C:\\Users\\elizz\\speakscenes-almanca\\serve.ps1", "-Port", "8124", "-LocalOnly"],
+      "port": 8124
+    },
+    {
+      "name": "ss-italyanca",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-ExecutionPolicy", "Bypass", "-File", "C:\\Users\\elizz\\speakscenes-italyanca\\serve.ps1", "-Port", "8125", "-LocalOnly"],
+      "port": 8125
+    },
+    {
+      "name": "ss-fransizca",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-ExecutionPolicy", "Bypass", "-File", "C:\\Users\\elizz\\speakscenes-fransizca\\serve.ps1", "-Port", "8126", "-LocalOnly"],
+      "port": 8126
+    },
+    {
+      "name": "ss-ispanyolca",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-ExecutionPolicy", "Bypass", "-File", "C:\\Users\\elizz\\speakscenes-ispanyolca\\serve.ps1", "-Port", "8127", "-LocalOnly"],
+      "port": 8127
+    },
+    {
+      "name": "ss-portekizce",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-ExecutionPolicy", "Bypass", "-File", "C:\\Users\\elizz\\speakscenes-portekizce\\serve.ps1", "-Port", "8128", "-LocalOnly"],
+      "port": 8128
     }
   ]
 }

@@ -26,7 +26,7 @@ const PRESETS = {
   banker_m:       { skin: '#a9713f', hair: '#12100d', style: 'short',  top: '#2a2f3e', acc: 'tie' },
   exec_m:         { skin: '#e4b992', hair: '#8f8578', style: 'side',   top: '#333844', acc: 'tie' },
   exec_f:         { skin: '#dfae82', hair: '#191411', style: 'bob',    top: '#5e3548', acc: null },
-  professor_m:    { skin: '#b8induc', hair: '#d8d3cb', style: 'bald',  top: '#4f4438', acc: 'glasses' },
+  professor_m:    { skin: '#b8845c', hair: '#d8d3cb', style: 'bald',  top: '#4f4438', acc: 'glasses' },
   journalist_f:   { skin: '#f2cba6', hair: '#a34f2b', style: 'curlyl', top: '#365a4e', acc: null }
 };
 // fix accidental invalid color above

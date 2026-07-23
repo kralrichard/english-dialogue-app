@@ -60,5 +60,65 @@ export const TRAVEL_AGENCY_DIALOGUES = [
         pronunciationTips: ['Say "go ahead" as a smooth, confident phrase, stressing "ahead."']
       }
     ]
+  }),
+
+  createDialogue({
+    id: 'travel-agency-changing-itinerary-b2-01',
+    locationId: 'travel-agency',
+    scenarioId: 'changing-itinerary',
+    title: 'Changing an Existing Booking',
+    level: 'B2',
+    length: 'medium',
+    goal: 'Change travel dates and understand the cost of doing so.',
+    tags: ['negotiation', 'problem-solving'],
+    sceneType: 'formal-office',
+    characters: {
+      A: { name: 'Claudia', role: 'Travel Consultant', gender: 'female', accent: 'international', avatarPreset: 'agent_f2' },
+      B: { name: 'You', role: 'Client', gender: 'neutral', accent: 'american', avatarPreset: 'guest_neutral' }
+    },
+    turns: [
+      { speaker: 'A', text: 'You’d like to change something about your trip?', translation_tr: 'Seyahatinizle ilgili bir şeyi değiştirmek mi istiyorsunuz?', emotion: 'curious', register: 'formal' },
+      {
+        speaker: 'B', expected: 'Yes, I need to push my return flight back by three days.',
+        altAccepted: ['I’d like to move my return date three days later.', 'Could I postpone the flight home to the twelfth?'],
+        translation_tr: 'Evet, dönüş uçuşumu üç gün ertelemem gerekiyor.',
+        register: 'formal', ipa: '/aɪ niːd tuː pʊʃ maɪ rɪˈtɜːrn flaɪt bæk baɪ θriː deɪz/',
+        grammar: [
+          { word: 'push back', role: 'phrasal verb', note: 'Means to postpone to a later time — common in business and travel.' },
+          { word: 'by three days', role: 'preposition of difference', note: '"By" shows the size of the change, not the new date.' }
+        ],
+        keyExpressions: [{ phrase: 'push a date back', meaning: 'move it to a later time' }],
+        exampleSentences: ['We pushed the meeting back an hour.', 'Prices rose by ten percent.'],
+        pronunciationTips: ['"push back" — keep both words clear; the meaning depends on them.']
+      },
+      { speaker: 'A', text: 'That’s possible, but there’s a change fee plus a fare difference.', translation_tr: 'Bu mümkün ama değişiklik ücreti artı bilet farkı var.', emotion: 'concerned', register: 'formal' },
+      {
+        speaker: 'B', expected: 'Roughly how much would the total come to?',
+        altAccepted: ['What would that cost me in total?', 'Could you give me an estimate of the full amount?'],
+        translation_tr: 'Toplam yaklaşık ne kadar tutar?',
+        register: 'formal', ipa: '/ˈrʌfli haʊ mʌtʃ wʊd ðə ˈtoʊtəl kʌm tuː/',
+        grammar: [
+          { word: 'come to', role: 'phrasal verb', note: 'Means to add up to a total amount.' },
+          { word: 'would', role: 'hypothetical modal', note: 'Keeps the question at the level of an enquiry, not a commitment.' }
+        ],
+        keyExpressions: [{ phrase: 'come to', meaning: 'to total a certain amount' }],
+        exampleSentences: ['That comes to fifty euros.', 'How much does it come to?'],
+        pronunciationTips: ['"come to" links into "cum-tuh".']
+      },
+      { speaker: 'A', text: 'Around one hundred and eighty euros altogether.', translation_tr: 'Toplamda yaklaşık yüz seksen euro.', emotion: 'neutral', register: 'formal' },
+      {
+        speaker: 'B', expected: 'That’s acceptable. Please go ahead and make the change.',
+        altAccepted: ['Fine — please proceed with the amendment.', 'I can live with that. Go ahead, thank you.'],
+        translation_tr: 'Kabul edilebilir. Lütfen değişikliği yapın.',
+        register: 'formal', ipa: '/pliːz ɡoʊ əˈhed ænd meɪk ðə tʃeɪndʒ/',
+        grammar: [
+          { word: 'go ahead', role: 'phrasal verb', note: 'Means to proceed — gives clear permission to act.' },
+          { word: 'make the change', role: 'collocation', note: 'English "makes" a change, not "does" one.' }
+        ],
+        keyExpressions: [{ phrase: 'go ahead', meaning: 'proceed / do it' }],
+        exampleSentences: ['Go ahead and book it.', 'They made several changes.'],
+        pronunciationTips: ['"go ahead" links into "go-a-head" with no pause.']
+      }
+    ]
   })
 ];

@@ -59,5 +59,65 @@ export const PASSPORT_CONTROL_DIALOGUES = [
         pronunciationTips: ['Contract "I will" to "I’ll" — say it as one quick syllable.']
       }
     ]
+  }),
+
+  createDialogue({
+    id: 'passport-control-extended-questioning-b2-01',
+    locationId: 'passport-control',
+    scenarioId: 'extended-questioning',
+    title: 'Extended Questioning at the Border',
+    level: 'B2',
+    length: 'medium',
+    goal: 'Answer detailed border questions calmly and consistently.',
+    tags: ['problem-solving'],
+    sceneType: 'airport',
+    characters: {
+      A: { name: 'Officer Lang', role: 'Border Officer', gender: 'female', accent: 'international', avatarPreset: 'officer_m' },
+      B: { name: 'You', role: 'Traveller', gender: 'neutral', accent: 'american', avatarPreset: 'guest_neutral' }
+    },
+    turns: [
+      { speaker: 'A', text: 'You’ve visited three times this year. What’s the reason for the frequency?', translation_tr: 'Bu yıl üç kez geldiniz. Bu sıklığın sebebi nedir?', emotion: 'formal', register: 'formal' },
+      {
+        speaker: 'B', expected: 'My company has a branch here, so I come over for quarterly meetings.',
+        altAccepted: ['I travel here for work — my employer has an office in the city.', 'Business. Our regional office is here and I attend reviews every quarter.'],
+        translation_tr: 'Şirketimin burada bir şubesi var, üç aylık toplantılar için geliyorum.',
+        register: 'formal', ipa: '/maɪ ˈkʌmpəni hæz ə brɑːntʃ hɪər soʊ aɪ kʌm ˈoʊvər/',
+        grammar: [
+          { word: 'so', role: 'result connector', note: 'Links the fact to the explanation clearly — border officers value directness.' },
+          { word: 'quarterly', role: 'adjective of frequency', note: 'Means four times a year, every three months.' }
+        ],
+        keyExpressions: [{ phrase: 'come over', meaning: 'travel here from another country' }],
+        exampleSentences: ['We hold quarterly reviews.', 'He comes over every summer.'],
+        pronunciationTips: ['Answer at a steady pace — rushing can read as nervousness.']
+      },
+      { speaker: 'A', text: 'Who covers your expenses while you’re here?', translation_tr: 'Buradayken masraflarınızı kim karşılıyor?', emotion: 'formal', register: 'formal' },
+      {
+        speaker: 'B', expected: 'My employer does. I have a letter confirming that, if you’d like to see it.',
+        altAccepted: ['The company pays for everything — I can show you the letter.', 'My employer covers them. I have documentation with me.'],
+        translation_tr: 'İşverenim karşılıyor. İsterseniz bunu doğrulayan bir mektubum var.',
+        register: 'formal', ipa: '/maɪ ɪmˈplɔɪər dʌz aɪ hæv ə ˈletər kənˈfɜːrmɪŋ ðæt/',
+        grammar: [
+          { word: 'My employer does', role: 'auxiliary substitution', note: '"Does" replaces "covers my expenses" — natural and concise.' },
+          { word: 'if you’d like to see it', role: 'conditional offer', note: 'Offering evidence proactively builds credibility.' }
+        ],
+        keyExpressions: [{ phrase: 'cover expenses', meaning: 'pay the costs' }],
+        exampleSentences: ['Who covers the cost?', 'I have a letter confirming my booking.'],
+        pronunciationTips: ['"employer" is stressed in the middle: em-PLOY-er.']
+      },
+      { speaker: 'A', text: 'That won’t be necessary. How long will you stay this time?', translation_tr: 'Buna gerek olmayacak. Bu sefer ne kadar kalacaksınız?', emotion: 'neutral', register: 'formal' },
+      {
+        speaker: 'B', expected: 'Five days. I fly back on Sunday evening.',
+        altAccepted: ['Just under a week — my return flight is Sunday.', 'Five nights, returning on Sunday.'],
+        translation_tr: 'Beş gün. Pazar akşamı dönüyorum.',
+        register: 'formal', ipa: '/faɪv deɪz aɪ flaɪ bæk ɒn ˈsʌndeɪ ˈiːvnɪŋ/',
+        grammar: [
+          { word: 'I fly back', role: 'present simple for timetables', note: 'Fixed schedules use the present simple, even about the future.' },
+          { word: 'on Sunday evening', role: 'preposition of time', note: 'Use "on" with a specific day, even with a part of that day attached.' }
+        ],
+        keyExpressions: [{ phrase: 'fly back', meaning: 'return by plane' }],
+        exampleSentences: ['I fly out on Monday.', 'The train leaves at six.'],
+        pronunciationTips: ['Give short, factual answers — extra detail invites more questions.']
+      }
+    ]
   })
 ];

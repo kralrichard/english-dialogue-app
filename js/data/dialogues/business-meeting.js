@@ -101,5 +101,66 @@ export const BUSINESS_MEETING_DIALOGUES = [
         pronunciationTips: ['Give "jointly" its own clear beat — it’s the word that signals shared accountability.']
       }
     ]
+  }),
+
+  createDialogue({
+    id: 'business-meeting-project-update-b2-01',
+    locationId: 'business-meeting',
+    scenarioId: 'project-update',
+    title: 'Giving a Project Update',
+    level: 'B2',
+    length: 'medium',
+    goal: 'Report progress, admit a delay and propose a solution.',
+    tags: ['problem-solving'],
+    sceneType: 'formal-office',
+    characters: {
+      A: { name: 'Daniel', role: 'Project Director', gender: 'male', accent: 'american', avatarPreset: 'exec_m' },
+      B: { name: 'You', role: 'Project Lead', gender: 'neutral', accent: 'american', avatarPreset: 'guest_neutral' }
+    },
+    turns: [
+      { speaker: 'A', text: 'Where are we with the migration? Are we still on track?', translation_tr: 'Geçiş projesinde neredeyiz? Hâlâ planda mıyız?', emotion: 'formal', register: 'formal' },
+      {
+        speaker: 'B', expected: 'We’re about eighty percent complete, but we’ve hit a delay with testing.',
+        altAccepted: ['Roughly eighty percent done — though testing has slipped.', 'Most of it is finished; testing is behind schedule though.'],
+        translation_tr: 'Yaklaşık yüzde seksenini tamamladık ama testlerde bir gecikme yaşadık.',
+        register: 'formal', ipa: '/wɪəv hɪt ə dɪˈleɪ wɪð ˈtestɪŋ/',
+        grammar: [
+          { word: 'hit a delay', role: 'collocation', note: 'Means to encounter an unexpected delay — natural business English.' },
+          { word: 'but', role: 'contrast connector', note: 'Report the good news first, then the problem — standard update structure.' }
+        ],
+        keyExpressions: [{ phrase: 'on track', meaning: 'progressing according to plan' }],
+        exampleSentences: ['We’re on track for Friday.', 'The project hit a delay.'],
+        pronunciationTips: ['"percent" is stressed on the second syllable: per-CENT.']
+      },
+      { speaker: 'A', text: 'How significant is the delay?', translation_tr: 'Gecikme ne kadar ciddi?', emotion: 'concerned', register: 'formal' },
+      {
+        speaker: 'B', expected: 'About a week, mainly because two testers were off sick.',
+        altAccepted: ['Roughly seven days — we lost two testers to illness.', 'A week or so, largely due to unexpected absences.'],
+        translation_tr: 'Yaklaşık bir hafta, esas olarak iki test uzmanı hastalandığı için.',
+        register: 'formal', ipa: '/əˈbaʊt ə wiːk ˈmeɪnli bɪˈkɒz tuː ˈtestərz wɜːr ɒf sɪk/',
+        grammar: [
+          { word: 'mainly because', role: 'reason connector', note: 'Gives the primary cause without pretending it is the only one.' },
+          { word: 'off sick', role: 'fixed expression', note: 'Means absent from work due to illness.' }
+        ],
+        keyExpressions: [{ phrase: 'off sick', meaning: 'absent because of illness' }],
+        exampleSentences: ['She’s off sick this week.', 'It failed mainly because of the weather.'],
+        pronunciationTips: ['Be direct about numbers — vagueness undermines credibility.']
+      },
+      { speaker: 'A', text: 'Can we still make the launch date?', translation_tr: 'Lansman tarihine yetişebilir miyiz?', emotion: 'formal', register: 'formal' },
+      {
+        speaker: 'B', expected: 'If we bring in one contractor for two weeks, I’m confident we can.',
+        altAccepted: ['Yes, provided we get temporary testing support.', 'We can, as long as we add a contractor to the testing phase.'],
+        translation_tr: 'İki haftalığına bir dış kaynak alırsak, yetişebileceğimizden eminim.',
+        register: 'formal', ipa: '/ɪf wiː brɪŋ ɪn wʌn kənˈtræktər aɪm ˈkɒnfɪdənt wiː kæn/',
+        grammar: [
+          { word: 'If we bring in', role: 'first conditional', note: 'Offers a concrete condition under which the deadline is achievable.' },
+          { word: 'I’m confident', role: 'expressing certainty', note: 'Stronger than "I think", weaker than "I guarantee" — professionally calibrated.' },
+          { word: 'we can', role: 'ellipsis', note: 'Short for "we can make the launch date" — avoids repetition.' }
+        ],
+        keyExpressions: [{ phrase: 'bring someone in', meaning: 'hire or add a person to a project' }],
+        exampleSentences: ['We brought in an expert.', 'I’m confident we’ll finish on time.'],
+        pronunciationTips: ['Stress "can" at the end — it delivers the reassurance.']
+      }
+    ]
   })
 ];
