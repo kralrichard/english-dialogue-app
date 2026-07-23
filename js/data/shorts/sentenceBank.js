@@ -101,10 +101,16 @@ function expandFrame(f, seedBase) {
 const N = NOUNS, A = ADJECTIVES, V = VERBS;
 
 const FRAMES = [
-  // ---------------- A0 : first words -------------------------------------
-  frame('A0', 'first-words', 999, [N], ([n]) => ({ en: cap(n.en) + '.', tr: cap(n.tr) + '.' })),
-  frame('A0', 'first-words', 999, [N], ([n]) => ({ en: `${cap(n.art)} ${n.en}.`, tr: `Bir ${n.tr}.` })),
-  frame('A0', 'first-words', 40, [A], ([a]) => ({ en: cap(a.en) + '!', tr: cap(a.tr) + '!' })),
+  // ---------------- A0 : first mini-sentences ----------------------------
+  // Deliberately NOT bare single words: even the very first cards are tiny
+  // real utterances, so the learner is speaking sentences from card one.
+  frame('A0', 'first-words', 999, [N], ([n]) => ({ en: `${cap(n.art)} ${n.en}!`, tr: `Bir ${n.tr}!` })),
+  frame('A0', 'pointing', 999, [N], ([n]) => ({ en: `Look, ${n.art} ${n.en}!`, tr: `Bak, bir ${n.tr}!` })),
+  frame('A0', 'pointing', 999, [N], ([n]) => ({ en: `There, ${n.art} ${n.en}!`, tr: `İşte orada bir ${n.tr}!` })),
+  frame('A0', 'first-words', 999, [N], ([n]) => ({ en: `Another ${n.en}!`, tr: `Bir ${n.tr} daha!` })),
+  frame('A0', 'location', 999, [N], ([n]) => ({ en: `The ${n.en} is here!`, tr: `${cap(n.tr)} burada!` })),
+  frame('A0', 'first-words', 999, [N], ([n]) => ({ en: `Oh, ${n.art} ${n.en}!`, tr: `Oo, bir ${n.tr}!` })),
+  frame('A0', 'first-words', 260, [N, N], ([a, b]) => ({ en: `${cap(a.art)} ${a.en} and ${b.art} ${b.en}!`, tr: `Bir ${a.tr} ve bir ${b.tr}!` })),
 
   // ---------------- A1 : simple sentences --------------------------------
   frame('A1', 'naming', 999, [N], ([n]) => ({ en: `This is ${n.art} ${n.en}.`, tr: `Bu bir ${n.tr}.` })),
@@ -187,7 +193,29 @@ const FRAMES = [
   frame('C2', 'nuance', 999, [OPINION_SENTENCES], ([s]) =>
     ({ en: `If I'm being completely honest, ${s.en}.`, tr: `Tamamen dürüst olmam gerekirse, ${s.tr}.` })),
   frame('C2', 'nuance', 999, [OPINION_SENTENCES], ([s]) =>
-    ({ en: `One can hardly deny that ${s.en}.`, tr: `İnkar edilemez ki ${s.tr}.` }))
+    ({ en: `One can hardly deny that ${s.en}.`, tr: `İnkar edilemez ki ${s.tr}.` })),
+
+  // ---- deeper upper-level content ---------------------------------------
+  // B2/C1/C2 used to hold only a few hundred cards between them, so those
+  // stages repeated constantly. These frames build level-appropriate complex
+  // sentences (subordinate clauses, hedging, inversion) from the same
+  // hand-checked noun/adjective/verb banks.
+  frame('B1', 'describing', 400, [N, A], ([n, a]) => ({ en: `I wonder whether the ${n.en} is really that ${a.en}.`, tr: `${cap(n.tr)} gerçekten bu kadar ${a.tr} mı, merak ediyorum.` })),
+  frame('B1', 'describing', 400, [N, A], ([n, a]) => ({ en: `Don't you think the ${n.en} is too ${a.en}?`, tr: `Sence de ${n.tr} fazla ${a.tr} değil mi?` })),
+  frame('B2', 'describing', 600, [N, A], ([n, a]) => ({ en: `Honestly, I didn't expect the ${n.en} to be that ${a.en}.`, tr: `Açıkçası ${n.tr} bu kadar ${a.tr} olur diye düşünmemiştim.` })),
+  frame('B2', 'describing', 500, [N, A], ([n, a]) => ({ en: `It depends on how ${a.en} the ${n.en} actually is.`, tr: `${cap(n.tr)} gerçekte ne kadar ${a.tr}, ona bağlı.` })),
+  frame('B2', 'describing', 400, [N, A], ([n, a]) => ({ en: `In my experience, the ${n.en} is rarely that ${a.en}.`, tr: `Tecrübeme göre ${n.tr} nadiren bu kadar ${a.tr} olur.` })),
+  frame('B2', 'plans', 999, [V], ([v]) => ({ en: `I never thought I would ${v.en} at all.`, tr: `Bir gün ${v.inf} aklıma gelmezdi.` })),
+  frame('B2', 'advice', 999, [V], ([v]) => ({ en: `I find it hard to ${v.en} regularly.`, tr: `Düzenli olarak ${v.inf} bana zor geliyor.` })),
+  frame('C1', 'describing', 600, [N, A], ([n, a]) => ({ en: `It surprises me how ${a.en} the ${n.en} actually is.`, tr: `${cap(n.tr)} gerçekte ne kadar ${a.tr}, bu beni şaşırtıyor.` })),
+  frame('C1', 'describing', 600, [N, A], ([n, a]) => ({ en: `One shouldn't assume the ${n.en} is always that ${a.en}.`, tr: `${cap(n.tr)} her zaman bu kadar ${a.tr} olur diye varsaymamak gerek.` })),
+  frame('C1', 'describing', 600, [N, A], ([n, a]) => ({ en: `Whether the ${n.en} is really that ${a.en} remains to be seen.`, tr: `${cap(n.tr)} gerçekten bu kadar ${a.tr} mı, şüpheli.` })),
+  frame('C1', 'advice', 999, [V], ([v]) => ({ en: `It would be well worth the effort to ${v.en} regularly.`, tr: `Düzenli olarak ${v.inf} gerçekten mantıklı olurdu.` })),
+  frame('C1', 'advice', 999, [V], ([v]) => ({ en: `I'm aware that I ought to ${v.en} more often.`, tr: `Daha sık ${v.inf} gerektiğinin farkındayım.` })),
+  frame('C2', 'describing', 600, [N, A], ([n, a]) => ({ en: `One could hardly claim that the ${n.en} is particularly ${a.en}.`, tr: `${cap(n.tr)} özellikle ${a.tr} denemez pek.` })),
+  frame('C2', 'describing', 600, [N, A], ([n, a]) => ({ en: `There is no denying that the ${n.en} is remarkably ${a.en}.`, tr: `${cap(n.tr)} dikkat çekici derecede ${a.tr}, bu inkar edilemez.` })),
+  frame('C2', 'describing', 500, [A, N], ([a, n]) => ({ en: `Rarely have I seen ${a.art} ${a.en} ${n.en}.`, tr: `Nadiren bu kadar ${a.tr} bir ${n.tr} gördüm.` })),
+  frame('C2', 'nuance', 999, [V], ([v]) => ({ en: `In hindsight, I should ${v.en} far more often.`, tr: `Geriye dönüp bakınca çok daha sık ${v.inf} gerekirmiş.` }))
 ];
 
 // ============================================================================

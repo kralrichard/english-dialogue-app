@@ -131,6 +131,39 @@ test('word accuracy is weighted: content words matter more', () => {
   assert(missFn.wordAccuracy > missContent.wordAccuracy, `function-word miss (${missFn.wordAccuracy}) should score higher than content-word miss (${missContent.wordAccuracy})`);
 });
 
+test('correct words are accepted even when the recogniser reports low confidence', () => {
+  // Chrome often returns a low/absent confidence for perfectly-spoken lines
+  // (especially outside en-US). Clarity must never block a correct answer.
+  const s = scoreAttempt({
+    expected: 'Can I have a medium latte, please?',
+    transcript: 'can i have a medium latte please',
+    confidence: 0.08, strictness: 'strict'
+  });
+  assert(s.accepted, `low confidence must not reject a correct answer (clarity ${s.clarity}, accuracy ${s.wordAccuracy})`);
+});
+
+test('correct words are accepted even when pace/pauses look bad', () => {
+  // durationMs includes thinking time before speaking and the recogniser's
+  // silence tail, so a correct short sentence can look very "slow".
+  const s = scoreAttempt({
+    expected: 'To go, please.',
+    transcript: 'to go please',
+    timing: { durationMs: 14000, pauseGapsMs: [4000] },
+    strictness: 'strict'
+  });
+  assert(s.accepted, `slow pace must not reject a correct answer (fluency ${s.fluency}, accuracy ${s.wordAccuracy})`);
+  assert(typeof s.fluency === 'number' && s.fluency < 60, 'fluency should still be REPORTED as low');
+});
+
+test('meaning errors still reject regardless of confidence', () => {
+  const s = scoreAttempt({
+    expected: 'I can go today.',
+    transcript: 'i cannot go today',
+    confidence: 0.99, strictness: 'relaxed'
+  });
+  assert(!s.accepted, 'negation flip must reject even with perfect confidence');
+});
+
 test('scorer is honest: no clarity/fluency without data', () => {
   const s = scoreAttempt({ expected: 'Hello there.', transcript: 'hello there', strictness: 'normal' });
   assertEq(s.clarity, null, 'clarity must be null without confidence');
@@ -263,7 +296,7 @@ test('schema: tokenize strips punctuation, keeps words', () => {
 });
 
 test('all shipped dialogues are valid and alternate A/B sensibly', async () => {
-  const { ALL_DIALOGUES } = await import('../js/data/dialogues/index.js');
+  const { ALL_DIALOGUES } = await import('../js/data/dialogues/index.js?v=content110');
   assert(ALL_DIALOGUES.length >= 18, `expected >= 18 dialogues, got ${ALL_DIALOGUES.length}`);
   for (const d of ALL_DIALOGUES) {
     validateDialogue(d); // throws if bad
@@ -285,7 +318,7 @@ test('review: queue, grade, schedule', async () => {
     localStorage.removeItem(KEY);
     // Fresh import trick isn't possible for the singleton (module cache), so
     // manipulate through its API against a clean key by re-reading state.
-    const { reviewSystem } = await import('../js/progress/reviewSystem.js');
+    const { reviewSystem } = await import('../js/progress/reviewSystem.js?v=content110');
     reviewSystem.state = { items: [] }; // reset in-memory state for the test
 
     const dlg = { id: 'rev-d', title: 'Rev', locationId: 'cafe' };
@@ -364,19 +397,23 @@ test('world: isLocationUnlocked honors manual unlock and level threshold', async
   try {
     localStorage.removeItem(WKEY);
     localStorage.removeItem(PKEY);
-    const { worldStore, isLocationUnlocked } = await import('../js/progress/worldStore.js');
-    const { progressStore } = await import('../js/progress/progressStore.js');
+    const { worldStore, isLocationUnlocked } = await import('../js/progress/worldStore.js?v=content110');
+    const { progressStore } = await import('../js/progress/progressStore.js?v=content110');
     worldStore.state = freshWorldState();
     progressStore.state = freshProgressState();
 
-    assert(isLocationUnlocked('home'), 'home is explicitly unlocked from the default state');
-    // New rule: every FEATURED world-map location is always open (no locks).
-    assert(isLocationUnlocked('hotel'), 'featured locations are open from the start (no locks)');
-    // A non-featured location without an explicit unlock is not reachable...
-    assert(!isLocationUnlocked('seaside'), 'a non-featured location is not open by default');
-    // ...until it is explicitly unlocked, which is sticky.
-    worldStore.unlockLocation('seaside');
-    assert(isLocationUnlocked('seaside'), 'explicit unlock is sticky');
+    // NOTHING IS LOCKED: every real location is reachable from a fresh state,
+    // featured or not, regardless of world level. minWorldLevel is only a
+    // recommendation used for ordering and the badge on the map.
+    assert(isLocationUnlocked('home'), 'home is reachable');
+    assert(isLocationUnlocked('hotel'), 'featured location is reachable');
+    assert(isLocationUnlocked('seaside'), 'non-featured location is reachable too');
+    // Only a location that does not exist is refused.
+    assert(!isLocationUnlocked('definitely-not-a-place'), 'unknown ids are still refused');
+    // Every catalogued location is reachable — no exceptions.
+    const { LOCATIONS } = await import('../js/data/locations.js?v=content110');
+    const locked = LOCATIONS.filter(l => !isLocationUnlocked(l.id)).map(l => l.id);
+    assertEq(locked.length, 0, `these locations are still locked: ${locked.join(', ')}`);
   } finally {
     if (wBackup === null) localStorage.removeItem(WKEY); else localStorage.setItem(WKEY, wBackup);
     if (pBackup === null) localStorage.removeItem(PKEY); else localStorage.setItem(PKEY, pBackup);
@@ -390,9 +427,9 @@ test('missionEngine: completing a dialogue awards its mission exactly once', asy
   try {
     localStorage.removeItem(WKEY);
     localStorage.removeItem(PKEY);
-    const { worldStore } = await import('../js/progress/worldStore.js');
-    const { progressStore } = await import('../js/progress/progressStore.js');
-    const { checkMissionsForDialogue } = await import('../js/progress/missionEngine.js');
+    const { worldStore } = await import('../js/progress/worldStore.js?v=content110');
+    const { progressStore } = await import('../js/progress/progressStore.js?v=content110');
+    const { checkMissionsForDialogue } = await import('../js/progress/missionEngine.js?v=content110');
     worldStore.state = freshWorldState();
     progressStore.state = freshProgressState();
 
@@ -417,7 +454,7 @@ test('review: vocab items queue and grade alongside dialogue-turn items', async 
   const backup = localStorage.getItem(KEY);
   try {
     localStorage.removeItem(KEY);
-    const { reviewSystem } = await import('../js/progress/reviewSystem.js');
+    const { reviewSystem } = await import('../js/progress/reviewSystem.js?v=content110');
     reviewSystem.state = { items: [] };
     reviewSystem.queueVocabItem({ id: 'cat', word: 'cat', translation_tr: 'kedi' });
     reviewSystem.queueVocabItem({ id: 'cat', word: 'cat', translation_tr: 'kedi' }); // idempotent
@@ -438,8 +475,8 @@ test('review: vocab items queue and grade alongside dialogue-turn items', async 
 });
 
 test('npcs: getNpcForDialogue resolves every shipped dialogue', async () => {
-  const { ALL_DIALOGUES } = await import('../js/data/dialogues/index.js');
-  const { getNpcForDialogue } = await import('../js/data/npcs.js');
+  const { ALL_DIALOGUES } = await import('../js/data/dialogues/index.js?v=content110');
+  const { getNpcForDialogue } = await import('../js/data/npcs.js?v=content110');
   for (const d of ALL_DIALOGUES) {
     const npc = getNpcForDialogue(d);
     assert(npc && npc.name === d.characters.A.name, `${d.id}: NPC name should match characters.A.name`);
@@ -448,16 +485,16 @@ test('npcs: getNpcForDialogue resolves every shipped dialogue', async () => {
 });
 
 test('locations: featured locations have a valid minWorldLevel', async () => {
-  const { LOCATIONS } = await import('../js/data/locations.js');
-  const { WORLD_LEVEL_CODES } = await import('../js/data/worldLevels.js');
+  const { LOCATIONS } = await import('../js/data/locations.js?v=content110');
+  const { WORLD_LEVEL_CODES } = await import('../js/data/worldLevels.js?v=content110');
   for (const loc of LOCATIONS.filter(l => l.featured)) {
     assert(WORLD_LEVEL_CODES.includes(loc.minWorldLevel), `${loc.id}: invalid minWorldLevel "${loc.minWorldLevel}"`);
   }
 });
 
 test('missions: every completeDialogue requirement references a real dialogue id', async () => {
-  const { ALL_DIALOGUES } = await import('../js/data/dialogues/index.js');
-  const { MISSIONS } = await import('../js/data/missions.js');
+  const { ALL_DIALOGUES } = await import('../js/data/dialogues/index.js?v=content110');
+  const { MISSIONS } = await import('../js/data/missions.js?v=content110');
   const ids = new Set(ALL_DIALOGUES.map(d => d.id));
   for (const m of MISSIONS) {
     for (const req of m.requirements) {
@@ -469,12 +506,12 @@ test('missions: every completeDialogue requirement references a real dialogue id
 // ---------------- Story Mode: branching engine, schema, store ----------------
 
 test('scenarios: every scenario passes schema validation at import', async () => {
-  const { ALL_SCENARIOS } = await import('../js/data/branching/scenarios/index.js');
+  const { ALL_SCENARIOS } = await import('../js/data/branching/scenarios/index.js?v=content110');
   assert(ALL_SCENARIOS.length >= 12, `expected >= 12 scenarios, got ${ALL_SCENARIOS.length}`);
 });
 
 test('scenarios: every choice.next and node.next targets a real node or ending', async () => {
-  const { ALL_SCENARIOS } = await import('../js/data/branching/scenarios/index.js');
+  const { ALL_SCENARIOS } = await import('../js/data/branching/scenarios/index.js?v=content110');
   for (const s of ALL_SCENARIOS) {
     const isTarget = (id) => s.nodes[id] || s.endings[id];
     for (const node of Object.values(s.nodes)) {
@@ -486,7 +523,7 @@ test('scenarios: every choice.next and node.next targets a real node or ending',
 });
 
 test('scenarios: every decision node offers at least 2 choices', async () => {
-  const { ALL_SCENARIOS } = await import('../js/data/branching/scenarios/index.js');
+  const { ALL_SCENARIOS } = await import('../js/data/branching/scenarios/index.js?v=content110');
   for (const s of ALL_SCENARIOS) {
     for (const node of Object.values(s.nodes)) {
       if (node.choices) assert(node.choices.length >= 2, `${s.id}:${node.id} has < 2 choices`);
@@ -495,7 +532,7 @@ test('scenarios: every decision node offers at least 2 choices', async () => {
 });
 
 test('scenarios: every ending is reachable from the start node', async () => {
-  const { ALL_SCENARIOS } = await import('../js/data/branching/scenarios/index.js');
+  const { ALL_SCENARIOS } = await import('../js/data/branching/scenarios/index.js?v=content110');
   for (const s of ALL_SCENARIOS) {
     const reached = new Set();
     const seenNodes = new Set();
@@ -515,8 +552,8 @@ test('scenarios: every ending is reachable from the start node', async () => {
 });
 
 test('branchEngine: different choices lead to different next nodes', async () => {
-  const { BranchEngine } = await import('../js/engine/branchEngine.js');
-  const { getScenario } = await import('../js/data/branching/scenarios/index.js');
+  const { BranchEngine } = await import('../js/engine/branchEngine.js?v=content110');
+  const { getScenario } = await import('../js/data/branching/scenarios/index.js?v=content110');
   const s = getScenario('hotel-checkin');
   const e1 = new BranchEngine(s);
   const start = e1.currentNode();
@@ -531,8 +568,8 @@ test('branchEngine: different choices lead to different next nodes', async () =>
 });
 
 test('branchEngine: back() returns to a previous decision, keeping explored marks', async () => {
-  const { BranchEngine } = await import('../js/engine/branchEngine.js');
-  const { getScenario } = await import('../js/data/branching/scenarios/index.js');
+  const { BranchEngine } = await import('../js/engine/branchEngine.js?v=content110');
+  const { getScenario } = await import('../js/data/branching/scenarios/index.js?v=content110');
   const e = new BranchEngine(getScenario('hotel-checkin'));
   const startId = e.currentNodeId;
   const firstChoice = e.currentNode().choices[0].id;
@@ -545,8 +582,8 @@ test('branchEngine: back() returns to a previous decision, keeping explored mark
 });
 
 test('branchEngine: commitChoice throws when not at a decision point (guard)', async () => {
-  const { BranchEngine } = await import('../js/engine/branchEngine.js');
-  const { getScenario } = await import('../js/data/branching/scenarios/index.js');
+  const { BranchEngine } = await import('../js/engine/branchEngine.js?v=content110');
+  const { getScenario } = await import('../js/data/branching/scenarios/index.js?v=content110');
   const e = new BranchEngine(getScenario('airport-checkin'));
   // walk to an ending, then committing again must throw
   let guard = 0;
@@ -560,8 +597,8 @@ test('branchEngine: commitChoice throws when not at a decision point (guard)', a
 });
 
 test('storyStore: XP is full first time then reduced practice XP (anti-farm)', async () => {
-  const { storyStore } = await import('../js/progress/storyStore.js');
-  const { getScenario } = await import('../js/data/branching/scenarios/index.js');
+  const { storyStore } = await import('../js/progress/storyStore.js?v=content110');
+  const { getScenario } = await import('../js/data/branching/scenarios/index.js?v=content110');
   const STORY_KEY = 'edapp:story:v1';
   const s = getScenario('meeting-friend');
   const node = s.nodes[s.startNodeId];
@@ -589,14 +626,14 @@ test('storyStore: XP is full first time then reduced practice XP (anti-farm)', a
 });
 
 test('storyStore: relationship tier rises with positive effects', async () => {
-  const { relationshipTier } = await import('../js/progress/storyStore.js');
+  const { relationshipTier } = await import('../js/progress/storyStore.js?v=content110');
   assert(relationshipTier(0).id === 'stranger', 'zero should be stranger');
   assert(relationshipTier(8).id === 'friend', '8 should be friend');
   assert(relationshipTier(20).id === 'trusted', '20 should be trusted');
 });
 
 test('vocabulary: lookupWord finds a known word and falls back gracefully', async () => {
-  const { lookupWord } = await import('../js/data/branching/vocabulary.js');
+  const { lookupWord } = await import('../js/data/branching/vocabulary.js?v=content110');
   assert(lookupWord('reservation').tr === 'rezervasyon', 'should find reservation');
   assert(lookupWord('Reservation,').tr === 'rezervasyon', 'should strip punctuation/case');
   const miss = lookupWord('zxqwv');
@@ -604,7 +641,7 @@ test('vocabulary: lookupWord finds a known word and falls back gracefully', asyn
 });
 
 test('phrasebook: has at least 200 unique, well-formed entries', async () => {
-  const { PHRASEBOOK, PHRASE_PLACES } = await import('../js/data/branching/phrasebook.js');
+  const { PHRASEBOOK, PHRASE_PLACES } = await import('../js/data/branching/phrasebook.js?v=content110');
   assert(PHRASEBOOK.length >= 200, `expected >= 200 phrases, got ${PHRASEBOOK.length}`);
   const ids = new Set();
   const levels = new Set(['A0', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2']);
@@ -618,7 +655,7 @@ test('phrasebook: has at least 200 unique, well-formed entries', async () => {
 });
 
 test('phrasebook: an equivalent typed answer is accepted by the scorer', async () => {
-  const { PHRASEBOOK } = await import('../js/data/branching/phrasebook.js');
+  const { PHRASEBOOK } = await import('../js/data/branching/phrasebook.js?v=content110');
   const p = PHRASEBOOK.find(x => x.en === 'I have a reservation.');
   assert(p, 'expected the hotel reservation phrase to exist');
   const s = scoreAttempt({ expected: p.en, transcript: 'i have a reservation', strictness: 'relaxed' });
@@ -628,14 +665,14 @@ test('phrasebook: an equivalent typed answer is accepted by the scorer', async (
 // ---------------- shorts sentence bank + growth ----------------
 
 test('shorts bank: at least 10,000 graded sentences', async () => {
-  const { buildShortsBank, shortsCount } = await import('../js/data/shorts/sentenceBank.js');
+  const { buildShortsBank, shortsCount } = await import('../js/data/shorts/sentenceBank.js?v=content110');
   const bank = buildShortsBank();
   assert(bank.length >= 10000, `expected >= 10000 sentences, got ${bank.length}`);
   assertEq(shortsCount(), bank.length, 'shortsCount() should match bank length');
 });
 
 test('shorts bank: every entry well-formed (en + tr + valid level + unique id)', async () => {
-  const { buildShortsBank } = await import('../js/data/shorts/sentenceBank.js');
+  const { buildShortsBank } = await import('../js/data/shorts/sentenceBank.js?v=content110');
   const bank = buildShortsBank();
   const levels = new Set(['A0', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2']);
   const ids = new Set();
@@ -649,8 +686,25 @@ test('shorts bank: every entry well-formed (en + tr + valid level + unique id)',
   }
 });
 
+// The growth pace and the content depth must agree: while the learner is in a
+// life stage the feed shows only that level's sentences, so each level needs
+// at least as many sentences as its stage lasts in swipes -- otherwise cards
+// start repeating before the character grows up.
+test('shorts: content depth covers the growth pace at every level', async () => {
+  const { sentencesForLevel, LEVEL_ORDER } = await import('../js/data/shorts/sentenceBank.js?v=content110');
+  const { GROWTH_THRESHOLDS } = await import('../js/progress/shortsStore.js?v=content110');
+  for (let i = 0; i < LEVEL_ORDER.length; i++) {
+    const level = LEVEL_ORDER[i];
+    const span = i < GROWTH_THRESHOLDS.length - 1
+      ? GROWTH_THRESHOLDS[i + 1] - GROWTH_THRESHOLDS[i]
+      : 1500; // C2 is terminal -- keep a healthy reserve
+    const have = sentencesForLevel(level).length;
+    assert(have >= span, `${level}: ${have} sentences for a ${span}-swipe stage (would repeat)`);
+  }
+});
+
 test('shorts bank: sorted A0->C2 with every level populated', async () => {
-  const { buildShortsBank, levelBands, LEVEL_ORDER } = await import('../js/data/shorts/sentenceBank.js');
+  const { buildShortsBank, levelBands, LEVEL_ORDER } = await import('../js/data/shorts/sentenceBank.js?v=content110');
   const bank = buildShortsBank();
   const rank = c => LEVEL_ORDER.indexOf(c);
   for (let i = 1; i < bank.length; i++) {
@@ -663,14 +717,14 @@ test('shorts bank: sorted A0->C2 with every level populated', async () => {
 });
 
 test('shorts feed: shortForLevel wraps its cursor around', async () => {
-  const { shortForLevel, sentencesForLevel } = await import('../js/data/shorts/sentenceBank.js');
+  const { shortForLevel, sentencesForLevel } = await import('../js/data/shorts/sentenceBank.js?v=content110');
   const n = sentencesForLevel('C2').length;
   assert(n > 0, 'C2 should have sentences');
   assertEq(shortForLevel('C2', 0).id, shortForLevel('C2', n).id, 'cursor should wrap');
 });
 
 test('shorts bank: a sample sentence is accepted verbatim by the scorer', async () => {
-  const { sentencesForLevel } = await import('../js/data/shorts/sentenceBank.js');
+  const { sentencesForLevel } = await import('../js/data/shorts/sentenceBank.js?v=content110');
   const s = sentencesForLevel('A1').find(x => /^This is /.test(x.en));
   assert(s, 'expected an A1 "This is ..." sentence');
   const r = scoreAttempt({ expected: s.en, transcript: s.en.replace(/[.?!]/g, '').toLowerCase(), strictness: 'relaxed' });
@@ -678,7 +732,7 @@ test('shorts bank: a sample sentence is accepted verbatim by the scorer', async 
 });
 
 test('shorts growth: stage index tracks the swipe thresholds', async () => {
-  const { shortsStore, GROWTH_THRESHOLDS } = await import('../js/progress/shortsStore.js');
+  const { shortsStore, GROWTH_THRESHOLDS } = await import('../js/progress/shortsStore.js?v=content110');
   const st = shortsStore.getState();
   const orig = st.swipes;                 // mutate in-memory only; never _save()
   st.swipes = 0; assertEq(shortsStore.stageIndex(), 0, 'start = A0');
