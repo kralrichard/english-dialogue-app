@@ -1,9 +1,9 @@
 // Dispatches the 'minigame/:type/:id' route to the right mini-game screen.
-import { renderObjectHunt } from './miniGames/objectHuntScreen.js?v=content109';
-import { renderWordBuilder } from './miniGames/wordBuilderScreen.js?v=content109';
-import { renderSentenceBuilder } from './miniGames/sentenceBuilderScreen.js?v=content109';
-import { renderListeningChallenge } from './miniGames/listeningChallengeScreen.js?v=content109';
-import { renderMemoryMatch } from './miniGames/memoryMatchScreen.js?v=content109';
+import { renderObjectHunt } from './miniGames/objectHuntScreen.js?v=content110';
+import { renderWordBuilder } from './miniGames/wordBuilderScreen.js?v=content110';
+import { renderSentenceBuilder } from './miniGames/sentenceBuilderScreen.js?v=content110';
+import { renderListeningChallenge } from './miniGames/listeningChallengeScreen.js?v=content110';
+import { renderMemoryMatch } from './miniGames/memoryMatchScreen.js?v=content110';
 
 const SCREENS = {
   'object-hunt': renderObjectHunt,

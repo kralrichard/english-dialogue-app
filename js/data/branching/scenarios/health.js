@@ -1,4 +1,4 @@
-import { createScenario } from '../scenarioSchema.js?v=content109';
+import { createScenario } from '../scenarioSchema.js?v=content110';
 
 // NOTE: These are fictional language-learning conversations. They never give
 // real medical advice or diagnoses — the NPC always defers to real care.

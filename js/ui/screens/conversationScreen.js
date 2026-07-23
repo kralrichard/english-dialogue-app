@@ -14,20 +14,20 @@
 //   - each accepted line records progress exactly once (committedFlag)
 // ============================================================================
 
-import { getScenario } from '../../data/branching/scenarios/index.js?v=content109';
-import { getCharacter } from '../../data/branching/characters.js?v=content109';
-import { BranchEngine } from '../../engine/branchEngine.js?v=content109';
-import { createSpeechProvider, isNativeSpeechSupported } from '../../speech/speechRecognizer.js?v=content109';
-import { scoreAttempt } from '../../speech/scorer.js?v=content109';
-import { tts, isTTSSupported } from '../../speech/tts.js?v=content109';
-import { storyStore, relationshipTier, ACHIEVEMENTS } from '../../progress/storyStore.js?v=content109';
-import { settings } from '../../progress/settingsStore.js?v=content109';
-import { renderScene } from '../components/sceneBackground.js?v=content109';
-import { renderAvatar } from '../components/characterAvatar.js?v=content109';
-import { renderFeedback } from '../components/feedbackPanel.js?v=content109';
-import { lookupWord, GRAMMAR_NOTES } from '../../data/branching/vocabulary.js?v=content109';
-import { TONE_META, DIFFICULTY_META, ENDING_KINDS } from '../../data/branching/scenarioSchema.js?v=content109';
-import { navigate } from '../router.js?v=content109';
+import { getScenario } from '../../data/branching/scenarios/index.js?v=content110';
+import { getCharacter } from '../../data/branching/characters.js?v=content110';
+import { BranchEngine } from '../../engine/branchEngine.js?v=content110';
+import { createSpeechProvider, isNativeSpeechSupported } from '../../speech/speechRecognizer.js?v=content110';
+import { scoreAttempt } from '../../speech/scorer.js?v=content110';
+import { tts, isTTSSupported } from '../../speech/tts.js?v=content110';
+import { storyStore, relationshipTier, ACHIEVEMENTS } from '../../progress/storyStore.js?v=content110';
+import { settings } from '../../progress/settingsStore.js?v=content110';
+import { renderScene } from '../components/sceneBackground.js?v=content110';
+import { renderAvatar } from '../components/characterAvatar.js?v=content110';
+import { renderFeedback } from '../components/feedbackPanel.js?v=content110';
+import { lookupWord, GRAMMAR_NOTES } from '../../data/branching/vocabulary.js?v=content110';
+import { TONE_META, DIFFICULTY_META, ENDING_KINDS } from '../../data/branching/scenarioSchema.js?v=content110';
+import { navigate } from '../router.js?v=content110';
 
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
@@ -223,7 +223,7 @@ export function renderConversation(container, params) {
 
   function setupMic(micWrap, node, choice, typedOnly) {
     // Lazy import of the mic button component (keeps parity with dialogueScreen).
-    import('../components/micButton.js?v=content109').then(({ createMicButton }) => {
+    import('../components/micButton.js?v=content110').then(({ createMicButton }) => {
       if (destroyed || stage !== 'speaking') return;
       const mic = createMicButton(micWrap, { onPress: () => startRecording(node, choice, mic) });
       mic.setState(typedOnly ? 'disabled' : 'ready');

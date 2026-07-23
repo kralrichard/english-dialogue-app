@@ -1,4 +1,4 @@
-import { createScenario } from '../scenarioSchema.js?v=content109';
+import { createScenario } from '../scenarioSchema.js?v=content110';
 
 // ── Restaurant order (A2) ───────────────────────────────────────────────────
 export const restaurantOrder = createScenario({

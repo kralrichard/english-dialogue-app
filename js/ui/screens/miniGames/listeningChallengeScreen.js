@@ -3,13 +3,13 @@
 // from existing dialogue turns (both NPC lines and player-expected lines),
 // no new authoring needed. Replay and a slowed-down replay are both
 // available, matching the listening controls already used in dialogueScreen.js.
-import { ALL_DIALOGUES } from '../../../data/dialogues/index.js?v=content109';
-import { computeMiniGameReward } from '../../../engine/miniGameScoring.js?v=content109';
-import { progressStore } from '../../../progress/progressStore.js?v=content109';
-import { worldStore } from '../../../progress/worldStore.js?v=content109';
-import { checkMissionsForMiniGame } from '../../../progress/missionEngine.js?v=content109';
-import { tts, isTTSSupported } from '../../../speech/tts.js?v=content109';
-import { navigate } from '../../router.js?v=content109';
+import { ALL_DIALOGUES } from '../../../data/dialogues/index.js?v=content110';
+import { computeMiniGameReward } from '../../../engine/miniGameScoring.js?v=content110';
+import { progressStore } from '../../../progress/progressStore.js?v=content110';
+import { worldStore } from '../../../progress/worldStore.js?v=content110';
+import { checkMissionsForMiniGame } from '../../../progress/missionEngine.js?v=content110';
+import { tts, isTTSSupported } from '../../../speech/tts.js?v=content110';
+import { navigate } from '../../router.js?v=content110';
 
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 function shuffle(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }

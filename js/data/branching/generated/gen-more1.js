@@ -1,4 +1,4 @@
-import { miniAll } from '../miniBuilder.js?v=content109';
+import { miniAll } from '../miniBuilder.js?v=content110';
 
 // More branching scenarios (fresh topics) for hotel / airport / restaurant /
 // café / hospital / pharmacy.

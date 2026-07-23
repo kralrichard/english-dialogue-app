@@ -1,4 +1,4 @@
-import { miniAll } from '../miniBuilder.js?v=content109';
+import { miniAll } from '../miniBuilder.js?v=content110';
 
 // Scenarios for the newly-opened environments: school, gym, museum,
 // post office, library, seaside.

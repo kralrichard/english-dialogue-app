@@ -1,4 +1,4 @@
-import { miniAll } from '../miniBuilder.js?v=content109';
+import { miniAll } from '../miniBuilder.js?v=content110';
 
 // Fictional language-learning conversations — never real medical advice.
 export const HEALTH = miniAll([

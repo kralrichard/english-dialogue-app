@@ -1,4 +1,4 @@
-import { createScenario } from '../scenarioSchema.js?v=content109';
+import { createScenario } from '../scenarioSchema.js?v=content110';
 
 // ── Home: a morning at home (A1) ────────────────────────────────────────────
 export const homeMorning = createScenario({

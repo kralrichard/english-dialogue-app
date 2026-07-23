@@ -1,4 +1,4 @@
-import { createScenario } from '../scenarioSchema.js?v=content109';
+import { createScenario } from '../scenarioSchema.js?v=content110';
 
 // ── Airport check-in (A2) ───────────────────────────────────────────────────
 export const airportCheckin = createScenario({

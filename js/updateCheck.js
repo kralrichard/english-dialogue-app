@@ -19,7 +19,7 @@
 // new stamps for everything else.
 //
 // BUILD is rewritten by tools/stamp-version.ps1 -- do not edit it by hand.
-export const BUILD = 'content109';
+export const BUILD = 'content110';
 
 const RELOAD_GUARD = 'speakscenes:update-attempt';
 

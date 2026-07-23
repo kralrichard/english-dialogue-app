@@ -2,28 +2,28 @@
 // settings, registers routes, and starts the router. Content validation
 // errors surface as a readable error screen instead of a blank page.
 
-import { registerRoute, startRouter } from './ui/router.js?v=content109';
-import { renderHome } from './ui/screens/homeScreen.js?v=content109';
-import { renderPicker } from './ui/screens/pickerScreen.js?v=content109';
-import { renderDialogue } from './ui/screens/dialogueScreen.js?v=content109';
-import { renderProgress } from './ui/screens/progressScreen.js?v=content109';
-import { renderReview } from './ui/screens/reviewScreen.js?v=content109';
-import { renderSettings } from './ui/screens/settingsScreen.js?v=content109';
-import { renderWorld } from './ui/screens/worldScreen.js?v=content109';
-import { renderEncounter } from './ui/screens/encounterScreen.js?v=content109';
-import { renderMiniGame } from './ui/screens/miniGameRouter.js?v=content109';
-import { renderCharacter } from './ui/screens/characterScreen.js?v=content109';
-import { renderPlacementTest } from './ui/screens/placementTestScreen.js?v=content109';
-import { renderWelcome } from './ui/screens/welcomeScreen.js?v=content109';
-import { renderCharacterCreation } from './ui/screens/characterCreationScreen.js?v=content109';
-import { renderLevelSelect } from './ui/screens/levelSelectScreen.js?v=content109';
-import { renderStoryMap } from './ui/screens/storyMapScreen.js?v=content109';
-import { renderConversation } from './ui/screens/conversationScreen.js?v=content109';
-import { renderBranchMap } from './ui/screens/branchMapScreen.js?v=content109';
-import { renderPhrasePlaces, renderPhraseList } from './ui/screens/quickPracticeScreen.js?v=content109';
-import { renderShorts } from './ui/screens/shortsScreen.js?v=content109';
-import { settings } from './progress/settingsStore.js?v=content109';
-import { checkForUpdate } from './updateCheck.js?v=content109';
+import { registerRoute, startRouter } from './ui/router.js?v=content110';
+import { renderHome } from './ui/screens/homeScreen.js?v=content110';
+import { renderPicker } from './ui/screens/pickerScreen.js?v=content110';
+import { renderDialogue } from './ui/screens/dialogueScreen.js?v=content110';
+import { renderProgress } from './ui/screens/progressScreen.js?v=content110';
+import { renderReview } from './ui/screens/reviewScreen.js?v=content110';
+import { renderSettings } from './ui/screens/settingsScreen.js?v=content110';
+import { renderWorld } from './ui/screens/worldScreen.js?v=content110';
+import { renderEncounter } from './ui/screens/encounterScreen.js?v=content110';
+import { renderMiniGame } from './ui/screens/miniGameRouter.js?v=content110';
+import { renderCharacter } from './ui/screens/characterScreen.js?v=content110';
+import { renderPlacementTest } from './ui/screens/placementTestScreen.js?v=content110';
+import { renderWelcome } from './ui/screens/welcomeScreen.js?v=content110';
+import { renderCharacterCreation } from './ui/screens/characterCreationScreen.js?v=content110';
+import { renderLevelSelect } from './ui/screens/levelSelectScreen.js?v=content110';
+import { renderStoryMap } from './ui/screens/storyMapScreen.js?v=content110';
+import { renderConversation } from './ui/screens/conversationScreen.js?v=content110';
+import { renderBranchMap } from './ui/screens/branchMapScreen.js?v=content110';
+import { renderPhrasePlaces, renderPhraseList } from './ui/screens/quickPracticeScreen.js?v=content110';
+import { renderShorts } from './ui/screens/shortsScreen.js?v=content110';
+import { settings } from './progress/settingsStore.js?v=content110';
+import { checkForUpdate } from './updateCheck.js?v=content110';
 
 async function boot() {
   const screen = document.getElementById('screen');
@@ -40,12 +40,12 @@ async function boot() {
   // offending dialogue id -- it can never half-render inside a lesson.
   let dialogueCount, scenarioCount = 0;
   try {
-    const mod = await import('./data/dialogues/index.js?v=content109');
+    const mod = await import('./data/dialogues/index.js?v=content110');
     dialogueCount = mod.ALL_DIALOGUES.length;
     if (!dialogueCount) throw new Error('No dialogues registered.');
     // Load + validate the branching Story Mode content. createScenario()
     // throws on a malformed graph, so a bad scenario fails loudly here.
-    const story = await import('./data/branching/scenarios/index.js?v=content109');
+    const story = await import('./data/branching/scenarios/index.js?v=content110');
     scenarioCount = story.ALL_SCENARIOS.length;
   } catch (e) {
     screen.innerHTML = `

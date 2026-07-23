@@ -1,8 +1,8 @@
-import { settings } from '../../progress/settingsStore.js?v=content109';
-import { STRICTNESS_LEVELS } from '../../data/levels.js?v=content109';
-import { tts, isTTSSupported } from '../../speech/tts.js?v=content109';
-import { isNativeSpeechSupported } from '../../speech/speechRecognizer.js?v=content109';
-import { downloadExport, parseImportText, applyImport } from '../../progress/exportImport.js?v=content109';
+import { settings } from '../../progress/settingsStore.js?v=content110';
+import { STRICTNESS_LEVELS } from '../../data/levels.js?v=content110';
+import { tts, isTTSSupported } from '../../speech/tts.js?v=content110';
+import { isNativeSpeechSupported } from '../../speech/speechRecognizer.js?v=content110';
+import { downloadExport, parseImportText, applyImport } from '../../progress/exportImport.js?v=content110';
 
 const ACCENTS = [
   [null, 'Match each dialogue (default)'], ['american', 'American'], ['british', 'British'],

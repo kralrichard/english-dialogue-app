@@ -1,4 +1,4 @@
-import { createDialogue } from '../dialogueSchema.js?v=content109';
+import { createDialogue } from '../dialogueSchema.js?v=content110';
 
 export const DEBATE_TOPICS_DIALOGUES = [
   createDialogue({

@@ -1,4 +1,4 @@
-import { createScenario } from '../scenarioSchema.js?v=content109';
+import { createScenario } from '../scenarioSchema.js?v=content110';
 
 // ── Job interview (B2) ──────────────────────────────────────────────────────
 export const jobInterview = createScenario({

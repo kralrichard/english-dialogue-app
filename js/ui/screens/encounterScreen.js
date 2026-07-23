@@ -2,14 +2,14 @@
 // (or, at A0, which tap-based encounter) to offer at a location, then hands
 // off to the EXISTING dialogue engine/screen unchanged -- this screen never
 // reimplements conversation logic, it only decides what to launch.
-import { getLocation } from '../../data/locations.js?v=content109';
-import { findDialogues } from '../../data/dialogues/index.js?v=content109';
-import { getNpcForDialogue, getNpcsForLocation } from '../../data/npcs.js?v=content109';
-import { progressStore } from '../../progress/progressStore.js?v=content109';
-import { worldStore, isLocationUnlocked } from '../../progress/worldStore.js?v=content109';
-import { renderAvatar } from '../components/characterAvatar.js?v=content109';
-import { renderScene } from '../components/sceneBackground.js?v=content109';
-import { navigate } from '../router.js?v=content109';
+import { getLocation } from '../../data/locations.js?v=content110';
+import { findDialogues } from '../../data/dialogues/index.js?v=content110';
+import { getNpcForDialogue, getNpcsForLocation } from '../../data/npcs.js?v=content110';
+import { progressStore } from '../../progress/progressStore.js?v=content110';
+import { worldStore, isLocationUnlocked } from '../../progress/worldStore.js?v=content110';
+import { renderAvatar } from '../components/characterAvatar.js?v=content110';
+import { renderScene } from '../components/sceneBackground.js?v=content110';
+import { navigate } from '../router.js?v=content110';
 
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 

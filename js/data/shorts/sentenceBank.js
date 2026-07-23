@@ -19,7 +19,7 @@
 // — which is the whole point of the growing-avatar mechanic.
 // ============================================================================
 
-import { NOUNS, NOUN_GROUPS, ADJECTIVES, VERBS, OPINION_SENTENCES, ACTIVITIES, DURATIONS, REQUESTS, DIRECTIONS_PLACES } from './wordBanks.js?v=content109';
+import { NOUNS, NOUN_GROUPS, ADJECTIVES, VERBS, OPINION_SENTENCES, ACTIVITIES, DURATIONS, REQUESTS, DIRECTIONS_PLACES } from './wordBanks.js?v=content110';
 
 // Nouns you can plausibly buy / order / carry — used by commerce frames so we
 // never generate "I'd like to buy a doctor." Keeps the stream natural.

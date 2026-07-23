@@ -1,4 +1,4 @@
-import { miniAll } from '../miniBuilder.js?v=content109';
+import { miniAll } from '../miniBuilder.js?v=content110';
 
 export const SHOPS_SERVICES = miniAll([
   // ---------------- SUPERMARKET ----------------
