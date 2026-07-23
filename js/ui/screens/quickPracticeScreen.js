@@ -9,12 +9,12 @@
 //   #/practice-phrases/:placeId   -> list of that place's phrases + speak stage
 // ============================================================================
 
-import { PHRASEBOOK, PHRASE_PLACES, phrasesForPlace, PHRASEBOOK_COUNT } from '../../data/branching/phrasebook.js?v=content107';
-import { createSpeechProvider, isNativeSpeechSupported } from '../../speech/speechRecognizer.js?v=content107';
-import { scoreAttempt } from '../../speech/scorer.js?v=content107';
-import { tts } from '../../speech/tts.js?v=content107';
-import { storyStore } from '../../progress/storyStore.js?v=content107';
-import { navigate } from '../router.js?v=content107';
+import { PHRASEBOOK, PHRASE_PLACES, phrasesForPlace, PHRASEBOOK_COUNT } from '../../data/branching/phrasebook.js?v=content108';
+import { createSpeechProvider, isNativeSpeechSupported } from '../../speech/speechRecognizer.js?v=content108';
+import { scoreAttempt } from '../../speech/scorer.js?v=content108';
+import { tts } from '../../speech/tts.js?v=content108';
+import { storyStore } from '../../progress/storyStore.js?v=content108';
+import { navigate } from '../router.js?v=content108';
 
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
@@ -148,7 +148,7 @@ export function renderPhraseList(container, params) {
     overlay.querySelector('[data-act="check"]').onclick = doTyped;
     field.addEventListener('keydown', (e) => { if (e.key === 'Enter') doTyped(); });
 
-    import('../components/micButton.js?v=content107').then(({ createMicButton }) => {
+    import('../components/micButton.js?v=content108').then(({ createMicButton }) => {
       if (destroyed || !overlay.isConnected) return;
       const micWrap = overlay.querySelector('.mic-wrap');
       const mic = createMicButton(micWrap, { onPress: () => startRecording(phrase, overlay, mic) });
@@ -196,7 +196,7 @@ export function renderPhraseList(container, params) {
     const simple = phrase.level === 'A1' || phrase.level === 'A2';
     const score = scoreAttempt({ expected: phrase.en, transcript: res.transcript, confidence: res.confidence, timing: res.timing, strictness: simple ? 'relaxed' : 'normal' });
     const fb = overlay.querySelector('.ps-feedback');
-    import('../components/feedbackPanel.js?v=content107').then(({ renderFeedback }) => {
+    import('../components/feedbackPanel.js?v=content108').then(({ renderFeedback }) => {
       if (fb) fb.innerHTML = renderFeedback(score, { transcript: res.transcript, level: phrase.level });
       if (score.accepted) {
         if (mic) mic.setState('correct');

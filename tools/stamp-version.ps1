@@ -77,6 +77,19 @@ foreach ($f in Get-ChildItem (Join-Path $root 'js') -Recurse -Filter *.js) {
 }
 Update-File (Join-Path $root 'index.html') @($reHtml)
 
+# index.html cannot carry a ?v= stamp (its URL is the entry point), so the
+# running build compares itself against version.json and reloads when they
+# differ. Both sides of that comparison are written here so they can never
+# drift apart. See js/updateCheck.js.
+$versionJson = Join-Path $root 'version.json'
+$buildFile   = Join-Path $root 'js\updateCheck.js'
+if (-not $Check) {
+    [System.IO.File]::WriteAllText($versionJson, "{`"version`": `"$Version`"}`n", (New-Object System.Text.UTF8Encoding($false)))
+    $bt = [System.IO.File]::ReadAllText($buildFile, [System.Text.Encoding]::UTF8)
+    $bt = [regex]::Replace($bt, "(?<pre>export const BUILD = ')[^']*(?<post>';)", "`${pre}$Version`${post}")
+    [System.IO.File]::WriteAllText($buildFile, $bt, (New-Object System.Text.UTF8Encoding($false)))
+}
+
 $found = ($existing.Keys | Sort-Object) -join ', '
 if ($Check) {
     Write-Output "CHECK ONLY - nothing written."

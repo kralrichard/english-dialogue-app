@@ -1,4 +1,4 @@
-import { createDialogue } from '../dialogueSchema.js?v=content107';
+import { createDialogue } from '../dialogueSchema.js?v=content108';
 
 export const TRAVEL_AGENCY_DIALOGUES = [
   createDialogue({

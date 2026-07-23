@@ -1,4 +1,4 @@
-import { createScenario } from '../scenarioSchema.js?v=content107';
+import { createScenario } from '../scenarioSchema.js?v=content108';
 
 // Extra scenarios that add depth to existing environments (hotel, airport,
 // restaurant) so each place has more than one thing to do.

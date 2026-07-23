@@ -9,11 +9,11 @@
 // (`{...DEFAULTS, ...loadJSON(...)}`), so future field additions are safe
 // by construction. edapp:progress:v1 / edapp:review:v1 / edapp:settings:v1
 // are never touched by this file.
-import { loadJSON, saveJSON } from './storage.js?v=content107';
-import { progressStore } from './progressStore.js?v=content107';
-import { getLocation, LOCATIONS } from '../data/locations.js?v=content107';
-import { WORLD_LEVEL_CODES, worldLevelIndex } from '../data/worldLevels.js?v=content107';
-import { LEVEL_CODES as DIALOGUE_LEVEL_CODES } from '../data/dialogueSchema.js?v=content107';
+import { loadJSON, saveJSON } from './storage.js?v=content108';
+import { progressStore } from './progressStore.js?v=content108';
+import { getLocation, LOCATIONS } from '../data/locations.js?v=content108';
+import { WORLD_LEVEL_CODES, worldLevelIndex } from '../data/worldLevels.js?v=content108';
+import { LEVEL_CODES as DIALOGUE_LEVEL_CODES } from '../data/dialogueSchema.js?v=content108';
 
 const KEY = 'edapp:world:v1';
 

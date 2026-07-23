@@ -1,6 +1,6 @@
 // First-run welcome screen. worldScreen.js redirects here whenever
 // worldStore.getState().onboarded is false.
-import { navigate } from '../router.js?v=content107';
+import { navigate } from '../router.js?v=content108';
 
 export function renderWelcome(container) {
   container.innerHTML = `

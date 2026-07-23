@@ -1,4 +1,4 @@
-import { createScenario } from '../scenarioSchema.js?v=content107';
+import { createScenario } from '../scenarioSchema.js?v=content108';
 
 // ── Train station: buying a ticket (A2) ─────────────────────────────────────
 export const trainTicket = createScenario({

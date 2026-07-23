@@ -3,16 +3,16 @@
 // recognizer + scorer as the dialogue screen; each result feeds the SM-2
 // scheduler with an honest quality grade.
 
-import { reviewSystem } from '../../progress/reviewSystem.js?v=content107';
-import { getDialogueById } from '../../data/dialogues/index.js?v=content107';
-import { getLevel } from '../../data/levels.js?v=content107';
-import { createSpeechProvider, TypedFallbackProvider, isNativeSpeechSupported } from '../../speech/speechRecognizer.js?v=content107';
-import { scoreAttempt } from '../../speech/scorer.js?v=content107';
-import { tts } from '../../speech/tts.js?v=content107';
-import { settings } from '../../progress/settingsStore.js?v=content107';
-import { createMicButton } from '../components/micButton.js?v=content107';
-import { renderFeedback } from '../components/feedbackPanel.js?v=content107';
-import { navigate } from '../router.js?v=content107';
+import { reviewSystem } from '../../progress/reviewSystem.js?v=content108';
+import { getDialogueById } from '../../data/dialogues/index.js?v=content108';
+import { getLevel } from '../../data/levels.js?v=content108';
+import { createSpeechProvider, TypedFallbackProvider, isNativeSpeechSupported } from '../../speech/speechRecognizer.js?v=content108';
+import { scoreAttempt } from '../../speech/scorer.js?v=content108';
+import { tts } from '../../speech/tts.js?v=content108';
+import { settings } from '../../progress/settingsStore.js?v=content108';
+import { createMicButton } from '../components/micButton.js?v=content108';
+import { renderFeedback } from '../components/feedbackPanel.js?v=content108';
+import { navigate } from '../router.js?v=content108';
 
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 

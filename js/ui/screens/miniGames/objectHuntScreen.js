@@ -3,14 +3,14 @@
 // as well as a standalone mini-game reachable from the world map. Driven by
 // TapEngine (js/engine/tapEngine.js), not DialogueEngine -- single-word tap
 // rounds don't fit the alternating-turn model.
-import { VOCABULARY, getVocabByLevel } from '../../../data/vocabulary.js?v=content107';
-import { TapEngine } from '../../../engine/tapEngine.js?v=content107';
-import { computeMiniGameReward } from '../../../engine/miniGameScoring.js?v=content107';
-import { progressStore } from '../../../progress/progressStore.js?v=content107';
-import { worldStore } from '../../../progress/worldStore.js?v=content107';
-import { checkMissionsForMiniGame } from '../../../progress/missionEngine.js?v=content107';
-import { tts, isTTSSupported } from '../../../speech/tts.js?v=content107';
-import { navigate } from '../../router.js?v=content107';
+import { VOCABULARY, getVocabByLevel } from '../../../data/vocabulary.js?v=content108';
+import { TapEngine } from '../../../engine/tapEngine.js?v=content108';
+import { computeMiniGameReward } from '../../../engine/miniGameScoring.js?v=content108';
+import { progressStore } from '../../../progress/progressStore.js?v=content108';
+import { worldStore } from '../../../progress/worldStore.js?v=content108';
+import { checkMissionsForMiniGame } from '../../../progress/missionEngine.js?v=content108';
+import { tts, isTTSSupported } from '../../../speech/tts.js?v=content108';
+import { navigate } from '../../router.js?v=content108';
 
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 function shuffle(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }

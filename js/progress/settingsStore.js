@@ -1,4 +1,4 @@
-import { loadJSON, saveJSON } from './storage.js?v=content107';
+import { loadJSON, saveJSON } from './storage.js?v=content108';
 
 const KEY = 'edapp:settings:v1';
 
