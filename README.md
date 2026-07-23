@@ -142,6 +142,23 @@ tests/                          browser-run automated test suite
 
 Create a file in `js/data/dialogues/` exporting an array of `createDialogue({...})` objects (see any existing file for the format: turns, Turkish translations, per-word grammar notes, IPA, alternate accepted phrasings), then register it in `js/data/dialogues/index.js`. Malformed content fails loudly at boot with the offending dialogue id.
 
+### Releasing (do this before every deploy)
+
+```powershell
+./tools/stamp-version.ps1        # stamps a UTC timestamp
+./tools/stamp-version.ps1 -Version content108   # or an explicit name
+```
+
+Then commit the result and push.
+
+This rewrites the `?v=` query on **every** local asset URL — the stylesheets and entry point in `index.html` plus all ~310 ES module imports — in one pass. Skipping it means returning visitors keep running the previous build.
+
+Why it is needed: GitHub Pages serves everything with `Cache-Control: max-age=600` and the header cannot be overridden, so for ten minutes a browser answers from its own cache without contacting the server. A module specifier resolves against the *importing* module's URL and does **not** inherit its query, so stamping only `js/app.js` refreshes that one file and leaves the other 118 stale. Stamping the whole set makes a release atomic: a browser sees either the complete old build or the complete new one, never a mix.
+
+The script is idempotent (re-running with the same version changes nothing) and `-Check` reports what would change without writing.
+
+Note: `<meta http-equiv="Cache-Control">` does not help here and is deliberately absent. Those are not pragma directives in the HTML spec, browsers ignore them, and meta tags never applied to subresources anyway.
+
 ## Honesty notes (what the scores really mean)
 
 - **Word accuracy / missing / extra / incorrect words** — real, from aligning the recognizer's actual transcript with the expected sentence (contraction-, number-, and filler-aware).
