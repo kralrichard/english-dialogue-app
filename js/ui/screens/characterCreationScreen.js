@@ -1,6 +1,6 @@
-import { worldStore } from '../../progress/worldStore.js?v=content108';
-import { renderPlayerAvatar, SKIN_TONES, HAIR_COLORS, HAIR_STYLES, OUTFIT_IDS } from '../components/avatarBuilder.js?v=content108';
-import { navigate } from '../router.js?v=content108';
+import { worldStore } from '../../progress/worldStore.js?v=content109';
+import { renderPlayerAvatar, SKIN_TONES, HAIR_COLORS, HAIR_STYLES, OUTFIT_IDS } from '../components/avatarBuilder.js?v=content109';
+import { navigate } from '../router.js?v=content109';
 
 export function renderCharacterCreation(container) {
   function render() {

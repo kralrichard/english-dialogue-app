@@ -2,27 +2,27 @@
 // (createScenario throws on malformed content), so a bad scenario fails loudly
 // at boot with its id — it can never half-render inside a conversation.
 
-import { allChoiceKeys } from '../scenarioSchema.js?v=content108';
-import { hotelCheckin, hotelRoomProblem } from './hotel.js?v=content108';
-import { airportCheckin, missingFlight } from './airport.js?v=content108';
-import { hospitalVisit, pharmacyVisit } from './health.js?v=content108';
-import { restaurantOrder, wrongOrder } from './restaurant.js?v=content108';
-import { meetingFriend, askingDirections } from './social.js?v=content108';
-import { jobInterview, workplaceMisunderstanding } from './workplace.js?v=content108';
-import { cafeOrder, cafeMeetup } from './cafe.js?v=content108';
-import { supermarketHelp, clothingReturn } from './shopping.js?v=content108';
-import { trainTicket, taxiRide } from './travel.js?v=content108';
-import { bankLostCard, policeLostPhone } from './services.js?v=content108';
-import { homeMorning } from './home.js?v=content108';
-import { hotelAmenities, passportControl, restaurantBill } from './extras.js?v=content108';
-import { HOSPITALITY } from '../generated/gen-hospitality.js?v=content108';
-import { TRAVEL } from '../generated/gen-travel.js?v=content108';
-import { HEALTH } from '../generated/gen-health.js?v=content108';
-import { SHOPS_SERVICES } from '../generated/gen-shops-services.js?v=content108';
-import { DAILY } from '../generated/gen-daily.js?v=content108';
-import { PLACES } from '../generated/gen-places.js?v=content108';
-import { MORE1 } from '../generated/gen-more1.js?v=content108';
-import { MORE2 } from '../generated/gen-more2.js?v=content108';
+import { allChoiceKeys } from '../scenarioSchema.js?v=content109';
+import { hotelCheckin, hotelRoomProblem } from './hotel.js?v=content109';
+import { airportCheckin, missingFlight } from './airport.js?v=content109';
+import { hospitalVisit, pharmacyVisit } from './health.js?v=content109';
+import { restaurantOrder, wrongOrder } from './restaurant.js?v=content109';
+import { meetingFriend, askingDirections } from './social.js?v=content109';
+import { jobInterview, workplaceMisunderstanding } from './workplace.js?v=content109';
+import { cafeOrder, cafeMeetup } from './cafe.js?v=content109';
+import { supermarketHelp, clothingReturn } from './shopping.js?v=content109';
+import { trainTicket, taxiRide } from './travel.js?v=content109';
+import { bankLostCard, policeLostPhone } from './services.js?v=content109';
+import { homeMorning } from './home.js?v=content109';
+import { hotelAmenities, passportControl, restaurantBill } from './extras.js?v=content109';
+import { HOSPITALITY } from '../generated/gen-hospitality.js?v=content109';
+import { TRAVEL } from '../generated/gen-travel.js?v=content109';
+import { HEALTH } from '../generated/gen-health.js?v=content109';
+import { SHOPS_SERVICES } from '../generated/gen-shops-services.js?v=content109';
+import { DAILY } from '../generated/gen-daily.js?v=content109';
+import { PLACES } from '../generated/gen-places.js?v=content109';
+import { MORE1 } from '../generated/gen-more1.js?v=content109';
+import { MORE2 } from '../generated/gen-more2.js?v=content109';
 
 export const ALL_SCENARIOS = [
   // originals

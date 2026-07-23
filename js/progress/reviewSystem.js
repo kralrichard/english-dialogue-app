@@ -2,7 +2,7 @@
 // with. A turn is queued automatically after 2+ failed attempts in a
 // dialogue session (see dialogueScreen.js), and resurfaces on the Review
 // screen once its due date arrives.
-import { loadJSON, saveJSON } from './storage.js?v=content108';
+import { loadJSON, saveJSON } from './storage.js?v=content109';
 
 const KEY = 'edapp:review:v1';
 
