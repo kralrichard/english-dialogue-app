@@ -3,40 +3,40 @@
 // results, then add one line here. Everything else (pickers, engine,
 // progress, review) discovers content through this module -- nothing else
 // needs to change.
-import { HOTEL_DIALOGUES } from './hotel.js';
-import { RESTAURANT_DIALOGUES } from './restaurant.js';
-import { CAFE_DIALOGUES } from './cafe.js';
-import { PHARMACY_DIALOGUES } from './pharmacy.js';
-import { TAXI_DIALOGUES } from './taxi.js';
-import { PASSPORT_CONTROL_DIALOGUES } from './passport-control.js';
-import { AIRPORT_DIALOGUES } from './airport.js';
-import { HOSPITAL_DIALOGUES } from './hospital.js';
-import { PARTY_DIALOGUES } from './party.js';
-import { TRAIN_STATION_DIALOGUES } from './train-station.js';
-import { CLOTHING_STORE_DIALOGUES } from './clothing-store.js';
-import { PHONE_CALL_DIALOGUES } from './phone-call.js';
-import { TECH_STORE_DIALOGUES } from './tech-store.js';
-import { JOB_INTERVIEW_DIALOGUES } from './job-interview.js';
-import { BANK_DIALOGUES } from './bank.js';
-import { TRAVEL_AGENCY_DIALOGUES } from './travel-agency.js';
-import { BUSINESS_MEETING_DIALOGUES } from './business-meeting.js';
-import { DEBATE_TOPICS_DIALOGUES } from './debate-topics.js';
-import { SEASIDE_DIALOGUES } from './seaside.js';
-import { AIRPLANE_DIALOGUES } from './airplane.js';
-import { SUPERMARKET_DIALOGUES } from './supermarket.js';
-import { BUS_STOP_DIALOGUES } from './bus-stop.js';
-import { POLICE_STATION_DIALOGUES } from './police-station.js';
-import { SCHOOL_DIALOGUES } from './school.js';
-import { UNIVERSITY_DIALOGUES } from './university.js';
-import { HOME_DIALOGUES } from './home.js';
-import { GYM_DIALOGUES } from './gym.js';
-import { CAR_RENTAL_DIALOGUES } from './car-rental.js';
-import { CUSTOMS_DIALOGUES } from './customs.js';
-import { NEW_PERSON_DIALOGUES } from './new-person.js';
-import { FRIEND_CHAT_DIALOGUES } from './friend-chat.js';
-import { DIRECTIONS_DIALOGUES } from './directions.js';
-import { COMPLAINT_DIALOGUES } from './complaint.js';
-import { FEELINGS_DIALOGUES } from './feelings.js';
+import { HOTEL_DIALOGUES } from './hotel.js?v=content107';
+import { RESTAURANT_DIALOGUES } from './restaurant.js?v=content107';
+import { CAFE_DIALOGUES } from './cafe.js?v=content107';
+import { PHARMACY_DIALOGUES } from './pharmacy.js?v=content107';
+import { TAXI_DIALOGUES } from './taxi.js?v=content107';
+import { PASSPORT_CONTROL_DIALOGUES } from './passport-control.js?v=content107';
+import { AIRPORT_DIALOGUES } from './airport.js?v=content107';
+import { HOSPITAL_DIALOGUES } from './hospital.js?v=content107';
+import { PARTY_DIALOGUES } from './party.js?v=content107';
+import { TRAIN_STATION_DIALOGUES } from './train-station.js?v=content107';
+import { CLOTHING_STORE_DIALOGUES } from './clothing-store.js?v=content107';
+import { PHONE_CALL_DIALOGUES } from './phone-call.js?v=content107';
+import { TECH_STORE_DIALOGUES } from './tech-store.js?v=content107';
+import { JOB_INTERVIEW_DIALOGUES } from './job-interview.js?v=content107';
+import { BANK_DIALOGUES } from './bank.js?v=content107';
+import { TRAVEL_AGENCY_DIALOGUES } from './travel-agency.js?v=content107';
+import { BUSINESS_MEETING_DIALOGUES } from './business-meeting.js?v=content107';
+import { DEBATE_TOPICS_DIALOGUES } from './debate-topics.js?v=content107';
+import { SEASIDE_DIALOGUES } from './seaside.js?v=content107';
+import { AIRPLANE_DIALOGUES } from './airplane.js?v=content107';
+import { SUPERMARKET_DIALOGUES } from './supermarket.js?v=content107';
+import { BUS_STOP_DIALOGUES } from './bus-stop.js?v=content107';
+import { POLICE_STATION_DIALOGUES } from './police-station.js?v=content107';
+import { SCHOOL_DIALOGUES } from './school.js?v=content107';
+import { UNIVERSITY_DIALOGUES } from './university.js?v=content107';
+import { HOME_DIALOGUES } from './home.js?v=content107';
+import { GYM_DIALOGUES } from './gym.js?v=content107';
+import { CAR_RENTAL_DIALOGUES } from './car-rental.js?v=content107';
+import { CUSTOMS_DIALOGUES } from './customs.js?v=content107';
+import { NEW_PERSON_DIALOGUES } from './new-person.js?v=content107';
+import { FRIEND_CHAT_DIALOGUES } from './friend-chat.js?v=content107';
+import { DIRECTIONS_DIALOGUES } from './directions.js?v=content107';
+import { COMPLAINT_DIALOGUES } from './complaint.js?v=content107';
+import { FEELINGS_DIALOGUES } from './feelings.js?v=content107';
 
 export const ALL_DIALOGUES = [
   ...HOTEL_DIALOGUES,

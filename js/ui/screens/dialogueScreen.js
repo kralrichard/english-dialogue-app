@@ -11,24 +11,24 @@
 //  - session is persisted after every advance -> refresh resumes the turn
 //  - permission denial / no ASR support degrade to clearly-labeled typed mode
 
-import { getDialogueById } from '../../data/dialogues/index.js';
-import { getLocation } from '../../data/locations.js';
-import { getLevel } from '../../data/levels.js';
-import { DialogueEngine } from '../../engine/dialogueEngine.js';
-import { createSpeechProvider, TypedFallbackProvider, isNativeSpeechSupported } from '../../speech/speechRecognizer.js';
-import { scoreAttempt } from '../../speech/scorer.js';
-import { tts, isTTSSupported } from '../../speech/tts.js';
-import { progressStore } from '../../progress/progressStore.js';
-import { reviewSystem } from '../../progress/reviewSystem.js';
-import { sessionStore } from '../../progress/sessionStore.js';
-import { worldStore } from '../../progress/worldStore.js';
-import { checkMissionsForDialogue } from '../../progress/missionEngine.js';
-import { settings } from '../../progress/settingsStore.js';
-import { renderScene } from '../components/sceneBackground.js';
-import { renderAvatar } from '../components/characterAvatar.js';
-import { createMicButton } from '../components/micButton.js';
-import { renderFeedback } from '../components/feedbackPanel.js';
-import { navigate } from '../router.js';
+import { getDialogueById } from '../../data/dialogues/index.js?v=content107';
+import { getLocation } from '../../data/locations.js?v=content107';
+import { getLevel } from '../../data/levels.js?v=content107';
+import { DialogueEngine } from '../../engine/dialogueEngine.js?v=content107';
+import { createSpeechProvider, TypedFallbackProvider, isNativeSpeechSupported } from '../../speech/speechRecognizer.js?v=content107';
+import { scoreAttempt } from '../../speech/scorer.js?v=content107';
+import { tts, isTTSSupported } from '../../speech/tts.js?v=content107';
+import { progressStore } from '../../progress/progressStore.js?v=content107';
+import { reviewSystem } from '../../progress/reviewSystem.js?v=content107';
+import { sessionStore } from '../../progress/sessionStore.js?v=content107';
+import { worldStore } from '../../progress/worldStore.js?v=content107';
+import { checkMissionsForDialogue } from '../../progress/missionEngine.js?v=content107';
+import { settings } from '../../progress/settingsStore.js?v=content107';
+import { renderScene } from '../components/sceneBackground.js?v=content107';
+import { renderAvatar } from '../components/characterAvatar.js?v=content107';
+import { createMicButton } from '../components/micButton.js?v=content107';
+import { renderFeedback } from '../components/feedbackPanel.js?v=content107';
+import { navigate } from '../router.js?v=content107';
 
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 

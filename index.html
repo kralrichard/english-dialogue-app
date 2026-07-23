@@ -4,16 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="color-scheme" content="dark">
-  <!-- Discourage aggressive caching so app updates (e.g. new Story Mode) show
-       up on reload instead of serving a stale cached shell. -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
+  <!-- Cache busting lives in the ?v= stamps below, not in meta tags: browsers
+       ignore http-equiv Cache-Control/Pragma/Expires entirely (they are not
+       pragma directives in the HTML spec), and they never applied to
+       subresources anyway. Run tools/stamp-version.ps1 before a release to
+       re-stamp every asset and module URL in one pass. -->
   <title>SpeakScenes — English Speaking Practice</title>
-  <link rel="stylesheet" href="css/styles.css?v=story2">
-  <link rel="stylesheet" href="css/story.css?v=story2">
-  <link rel="stylesheet" href="css/quick-practice.css?v=story2">
-  <link rel="stylesheet" href="css/shorts.css?v=shorts1">
+  <link rel="stylesheet" href="css/styles.css?v=content107">
+  <link rel="stylesheet" href="css/story.css?v=content107">
+  <link rel="stylesheet" href="css/quick-practice.css?v=content107">
+  <link rel="stylesheet" href="css/shorts.css?v=content107">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙️</text></svg>">
 </head>
 <body>
@@ -26,7 +26,7 @@
     </main>
     <nav id="bottom-nav" class="bottom-nav" aria-label="Main navigation"></nav>
   </div>
-  <script type="module" src="js/app.js?v=shorts1"></script>
+  <script type="module" src="js/app.js?v=content107"></script>
   <noscript><p style="padding:2rem;color:#fff">SpeakScenes needs JavaScript enabled.</p></noscript>
 </body>
 </html>

@@ -1,4 +1,4 @@
-import { loadJSON, saveJSON, todayKey } from './storage.js';
+import { loadJSON, saveJSON, todayKey } from './storage.js?v=content107';
 
 const KEY = 'edapp:progress:v1';
 

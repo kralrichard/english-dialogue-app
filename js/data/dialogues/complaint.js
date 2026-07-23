@@ -1,4 +1,4 @@
-import { createDialogue } from '../dialogueSchema.js';
+import { createDialogue } from '../dialogueSchema.js?v=content107';
 
 export const COMPLAINT_DIALOGUES = [
   createDialogue({

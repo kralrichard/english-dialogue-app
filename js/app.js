@@ -2,27 +2,27 @@
 // settings, registers routes, and starts the router. Content validation
 // errors surface as a readable error screen instead of a blank page.
 
-import { registerRoute, startRouter } from './ui/router.js';
-import { renderHome } from './ui/screens/homeScreen.js';
-import { renderPicker } from './ui/screens/pickerScreen.js';
-import { renderDialogue } from './ui/screens/dialogueScreen.js';
-import { renderProgress } from './ui/screens/progressScreen.js';
-import { renderReview } from './ui/screens/reviewScreen.js';
-import { renderSettings } from './ui/screens/settingsScreen.js';
-import { renderWorld } from './ui/screens/worldScreen.js';
-import { renderEncounter } from './ui/screens/encounterScreen.js';
-import { renderMiniGame } from './ui/screens/miniGameRouter.js';
-import { renderCharacter } from './ui/screens/characterScreen.js';
-import { renderPlacementTest } from './ui/screens/placementTestScreen.js';
-import { renderWelcome } from './ui/screens/welcomeScreen.js';
-import { renderCharacterCreation } from './ui/screens/characterCreationScreen.js';
-import { renderLevelSelect } from './ui/screens/levelSelectScreen.js';
-import { renderStoryMap } from './ui/screens/storyMapScreen.js';
-import { renderConversation } from './ui/screens/conversationScreen.js';
-import { renderBranchMap } from './ui/screens/branchMapScreen.js';
-import { renderPhrasePlaces, renderPhraseList } from './ui/screens/quickPracticeScreen.js';
-import { renderShorts } from './ui/screens/shortsScreen.js';
-import { settings } from './progress/settingsStore.js';
+import { registerRoute, startRouter } from './ui/router.js?v=content107';
+import { renderHome } from './ui/screens/homeScreen.js?v=content107';
+import { renderPicker } from './ui/screens/pickerScreen.js?v=content107';
+import { renderDialogue } from './ui/screens/dialogueScreen.js?v=content107';
+import { renderProgress } from './ui/screens/progressScreen.js?v=content107';
+import { renderReview } from './ui/screens/reviewScreen.js?v=content107';
+import { renderSettings } from './ui/screens/settingsScreen.js?v=content107';
+import { renderWorld } from './ui/screens/worldScreen.js?v=content107';
+import { renderEncounter } from './ui/screens/encounterScreen.js?v=content107';
+import { renderMiniGame } from './ui/screens/miniGameRouter.js?v=content107';
+import { renderCharacter } from './ui/screens/characterScreen.js?v=content107';
+import { renderPlacementTest } from './ui/screens/placementTestScreen.js?v=content107';
+import { renderWelcome } from './ui/screens/welcomeScreen.js?v=content107';
+import { renderCharacterCreation } from './ui/screens/characterCreationScreen.js?v=content107';
+import { renderLevelSelect } from './ui/screens/levelSelectScreen.js?v=content107';
+import { renderStoryMap } from './ui/screens/storyMapScreen.js?v=content107';
+import { renderConversation } from './ui/screens/conversationScreen.js?v=content107';
+import { renderBranchMap } from './ui/screens/branchMapScreen.js?v=content107';
+import { renderPhrasePlaces, renderPhraseList } from './ui/screens/quickPracticeScreen.js?v=content107';
+import { renderShorts } from './ui/screens/shortsScreen.js?v=content107';
+import { settings } from './progress/settingsStore.js?v=content107';
 
 async function boot() {
   const screen = document.getElementById('screen');
@@ -32,12 +32,12 @@ async function boot() {
   // offending dialogue id -- it can never half-render inside a lesson.
   let dialogueCount, scenarioCount = 0;
   try {
-    const mod = await import('./data/dialogues/index.js');
+    const mod = await import('./data/dialogues/index.js?v=content107');
     dialogueCount = mod.ALL_DIALOGUES.length;
     if (!dialogueCount) throw new Error('No dialogues registered.');
     // Load + validate the branching Story Mode content. createScenario()
     // throws on a malformed graph, so a bad scenario fails loudly here.
-    const story = await import('./data/branching/scenarios/index.js');
+    const story = await import('./data/branching/scenarios/index.js?v=content107');
     scenarioCount = story.ALL_SCENARIOS.length;
   } catch (e) {
     screen.innerHTML = `

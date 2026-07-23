@@ -1,4 +1,4 @@
-import { createScenario } from '../scenarioSchema.js';
+import { createScenario } from '../scenarioSchema.js?v=content107';
 
 // ── Bank: reporting a lost card (B1) ────────────────────────────────────────
 export const bankLostCard = createScenario({

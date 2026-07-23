@@ -18,7 +18,7 @@
 // Nothing in this file fabricates stress/intonation/phoneme measurements.
 // ============================================================================
 
-import { tokenize } from '../data/dialogueSchema.js';
+import { tokenize } from '../data/dialogueSchema.js?v=content107';
 
 export const STRICTNESS_THRESHOLDS = {
   //                weighted word accuracy | clarity floor | fluency floor

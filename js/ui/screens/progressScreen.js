@@ -1,7 +1,7 @@
-import { progressStore } from '../../progress/progressStore.js';
-import { getDialogueById } from '../../data/dialogues/index.js';
-import { getLocation } from '../../data/locations.js';
-import { todayKey } from '../../progress/storage.js';
+import { progressStore } from '../../progress/progressStore.js?v=content107';
+import { getDialogueById } from '../../data/dialogues/index.js?v=content107';
+import { getLocation } from '../../data/locations.js?v=content107';
+import { todayKey } from '../../progress/storage.js?v=content107';
 
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 

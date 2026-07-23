@@ -11,16 +11,16 @@
 // honest, separately-tracked "measured skill", never conflated with growth.
 // ============================================================================
 
-import { createSpeechProvider, isNativeSpeechSupported } from '../../speech/speechRecognizer.js';
-import { scoreAttempt } from '../../speech/scorer.js';
-import { tts } from '../../speech/tts.js';
-import { worldStore } from '../../progress/worldStore.js';
-import { shortsStore } from '../../progress/shortsStore.js';
-import { shortForLevel, sentencesForLevel, shortsCount, LEVEL_ORDER } from '../../data/shorts/sentenceBank.js';
-import { GROWTH_STAGES, getGrowthStage } from '../../data/worldLevels.js';
-import { renderPlayerAvatar } from '../components/avatarBuilder.js';
-import { renderFeedback } from '../components/feedbackPanel.js';
-import { navigate } from '../router.js';
+import { createSpeechProvider, isNativeSpeechSupported } from '../../speech/speechRecognizer.js?v=content107';
+import { scoreAttempt } from '../../speech/scorer.js?v=content107';
+import { tts } from '../../speech/tts.js?v=content107';
+import { worldStore } from '../../progress/worldStore.js?v=content107';
+import { shortsStore } from '../../progress/shortsStore.js?v=content107';
+import { shortForLevel, sentencesForLevel, shortsCount, LEVEL_ORDER } from '../../data/shorts/sentenceBank.js?v=content107';
+import { GROWTH_STAGES, getGrowthStage } from '../../data/worldLevels.js?v=content107';
+import { renderPlayerAvatar } from '../components/avatarBuilder.js?v=content107';
+import { renderFeedback } from '../components/feedbackPanel.js?v=content107';
+import { navigate } from '../router.js?v=content107';
 
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
