@@ -157,6 +157,16 @@ Why it is needed: GitHub Pages serves everything with `Cache-Control: max-age=60
 
 The script is idempotent (re-running with the same version changes nothing) and `-Check` reports what would change without writing.
 
+It also writes `version.json` and the `BUILD` constant in `js/updateCheck.js`, keeping both sides of the self-update check in step — see below.
+
+### Self-update (why a phone can't get stuck on an old build)
+
+`index.html` is the one file the stamps cannot cover: it is the entry point, so its URL is fixed. A browser holding it in cache boots the previous build no matter how many other files were re-stamped, and a page saved to the home screen may not revalidate on launch at all.
+
+So on boot the app fetches `version.json` with `cache: 'no-store'` and a unique query. If the deployed version differs from the running one, it navigates to the same page with `?v=<new version>` — a URL no cache has seen — which forces a fresh `index.html` carrying the new stamps. The current hash route is preserved, a `sessionStorage` guard limits this to one reload per version so a mismatch cannot loop, and any failure (offline, storage disabled) simply leaves the app running as it is.
+
+Verified end to end: a tab running `content109` against a server on `content110` reloaded itself and came back with 120/120 modules on `content110`.
+
 Note: `<meta http-equiv="Cache-Control">` does not help here and is deliberately absent. Those are not pragma directives in the HTML spec, browsers ignore them, and meta tags never applied to subresources anyway.
 
 ## Honesty notes (what the scores really mean)
